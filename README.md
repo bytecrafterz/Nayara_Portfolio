@@ -34,7 +34,9 @@ The second version of the portfolio: the 20 concept projects from the ChatGPT "S
 
 ## Publishing
 
-`deploy/deploy.sh setup user@host domain` once, then `deploy/deploy.sh push user@host domain` for each update. It installs to `/var/www/nayara-portfolio`, so it replaces v1 there.
+Live at **https://nayaraportfolio.vercel.app/**. Vercel publishes every push to `main` on GitHub on its own; `.vercelignore` keeps `source/`, `tools/` and `deploy/` off the live site. If the address changes, update `og:url`, `og:image`, `twitter:image` and `canonical` in `index.html`.
+
+`deploy/` is only needed to host on your own Ubuntu server instead (`deploy/deploy.sh setup user@host domain`, then `push`).
 
 ## Content rules
 
