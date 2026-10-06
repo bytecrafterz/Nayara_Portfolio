@@ -4,7 +4,7 @@ The second version of the portfolio: the 20 concept projects from the ChatGPT "S
 
 ## What's on the page
 
-- **Hero:** the headline "A point of view.", the **My Career** button, and five floating project images. On a laptop the images move in depth with the mouse.
+- **Hero:** the headline "A point of view.", the **My Career** button, and Nayara's portrait in a gold arch with five project images around it. Clicking the portrait opens the career book. On a laptop the images move in depth with the mouse.
 - **Work:** 20 projects in a staggered grid with filters. Every card shows a blurred preview at once and its image fades in when it arrives, so no card ever appears empty. Filters show and hide cards rather than rebuilding them. Cards tilt toward the cursor and catch the light. Clicking one opens a full‑screen viewer with the description, suggested stack, palette and all 3 images.
 - **Disciplines:** nine rows that filter the grid. On a laptop an image preview follows the cursor; on a phone each row shows a thumbnail.
 - **Career:** the same book as a small 3D object, plus key numbers.
@@ -37,12 +37,14 @@ The second version of the portfolio: the 20 concept projects from the ChatGPT "S
 | `source/` | Original images and `chatgpt-projects.json` from the ChatGPT site (not published) |
 | `tools/build_images.py` | Rebuilds `img/` from `source/`, prints the palettes, then runs `build_lqip.py` |
 | `tools/build_lqip.py` | Rebuilds `lqip.js` from `img/*-sm.webp` |
+| `tools/build_portraits.py` | Builds `img/portrait-studio*.webp` (first screen), `img/portrait-atelier*.webp` (contact) and the round `img/avatar.webp` (book) from `source/portrait-*.png` |
 | `deploy/` | `deploy.sh` (nginx + HTTPS on an Ubuntu server) and `nginx.conf` |
 
 ## Common edits
 
 - **Text:** edit the English in `index.html` (elements with `data-i18n`), then edit the same key under `strings.pt` and `strings.es` in `content.js`.
 - **Career book:** the `career` section of `content.js`. When your Workana numbers change, also update the numbers in `index.html` (Career section stats) and in `faces()` in the script (pages 3 and 4).
+- **New portrait:** replace `source/portrait-studio.png` or `source/portrait-atelier.png` (4:5, about 1100 × 1400 px), then run `python tools/build_portraits.py` and `python tools/build_lqip.py`.
 - **Add a project:** put `slug-1/2/3.webp` in `source/`, run `python tools/build_images.py`, then add an entry to `projects` in `content.js`.
 
 ## Publishing

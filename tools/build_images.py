@@ -6,6 +6,7 @@ Needs Pillow (pip install pillow).
 source/<slug>-<n>.webp  ->  img/<slug>-<n>.webp      (original, copied as is)
                             img/<slug>-<n>-sm.webp   (760 px wide, for cards)
                             lqip.js                  (blurred previews, via build_lqip.py)
+Portraits and the bookplate avatar come from build_portraits.py, which this also runs.
 """
 import json
 import shutil
@@ -15,6 +16,7 @@ from pathlib import Path
 from PIL import Image
 
 import build_lqip
+import build_portraits
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC, OUT = ROOT / "source", ROOT / "img"
@@ -48,9 +50,6 @@ for src in sorted(SRC.glob("*.webp")):
     im.resize((SMALL_W, h), Image.LANCZOS).save(OUT / f"{src.stem}-sm.webp", "WEBP", quality=76, method=6)
     groups[src.stem.rsplit("-", 1)[0]].append(im)
 
-av = Image.open(SRC / "avatar.png").convert("RGB")
-av.crop((12, 12, 180, 180)).save(OUT / "avatar.webp", "WEBP", quality=88)
-
 # Link preview (Open Graph), 1200 x 630.
 og = Image.open(SRC / "aurel-1.webp").convert("RGB")
 h = round(og.width * 630 / 1200)
@@ -59,4 +58,5 @@ og.crop((0, top, og.width, top + h)).resize((1200, 630), Image.LANCZOS).save(OUT
 
 print(json.dumps({slug: palette(ims) for slug, ims in groups.items()}))
 
+build_portraits.build()
 build_lqip.build()
