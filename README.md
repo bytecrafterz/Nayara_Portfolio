@@ -5,7 +5,7 @@ The second version of the portfolio: the 20 concept projects from the ChatGPT "S
 ## What's on the page
 
 - **Hero:** the headline "A point of view.", the **My Career** button, and five floating project images. On a laptop the images move in depth with the mouse.
-- **Work:** 20 projects in a staggered grid with filters. Cards tilt toward the cursor and catch the light. Clicking one opens a full‑screen viewer with the description, suggested stack, palette and all 3 images.
+- **Work:** 20 projects in a staggered grid with filters. Every card shows a blurred preview at once and its image fades in when it arrives, so no card ever appears empty. Filters show and hide cards rather than rebuilding them. Cards tilt toward the cursor and catch the light. Clicking one opens a full‑screen viewer with the description, suggested stack, palette and all 3 images.
 - **Disciplines:** nine rows that filter the grid. On a laptop an image preview follows the cursor; on a phone each row shows a thumbnail.
 - **Career:** the same book as a small 3D object, plus key numbers.
 - **My Career book:** clicking any My Career button, or the small book, flies a leather‑bound book to the centre. It floats, opens its cover, and turns its pages:
@@ -32,9 +32,11 @@ The second version of the portfolio: the 20 concept projects from the ChatGPT "S
 | --- | --- |
 | `index.html` | Layout, styles, the script, and the English page text |
 | `content.js` | Projects, disciplines, career book text and the Portuguese/Spanish page text |
+| `lqip.js` | Tiny blurred previews of every image, shown while the real image loads (generated) |
 | `img/` | `slug-1..3.webp` (1536 px), `slug-1..3-sm.webp` (760 px), `avatar.webp`, `og.jpg` |
 | `source/` | Original images and `chatgpt-projects.json` from the ChatGPT site (not published) |
-| `tools/build_images.py` | Rebuilds `img/` from `source/` and prints the palettes |
+| `tools/build_images.py` | Rebuilds `img/` from `source/`, prints the palettes, then runs `build_lqip.py` |
+| `tools/build_lqip.py` | Rebuilds `lqip.js` from `img/*-sm.webp` |
 | `deploy/` | `deploy.sh` (nginx + HTTPS on an Ubuntu server) and `nginx.conf` |
 
 ## Common edits

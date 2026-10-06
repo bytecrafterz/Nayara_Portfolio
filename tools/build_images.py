@@ -5,6 +5,7 @@ Needs Pillow (pip install pillow).
 
 source/<slug>-<n>.webp  ->  img/<slug>-<n>.webp      (original, copied as is)
                             img/<slug>-<n>-sm.webp   (760 px wide, for cards)
+                            lqip.js                  (blurred previews, via build_lqip.py)
 """
 import json
 import shutil
@@ -12,6 +13,8 @@ from collections import defaultdict
 from pathlib import Path
 
 from PIL import Image
+
+import build_lqip
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC, OUT = ROOT / "source", ROOT / "img"
@@ -55,3 +58,5 @@ top = (og.height - h) // 2
 og.crop((0, top, og.width, top + h)).resize((1200, 630), Image.LANCZOS).save(OUT / "og.jpg", quality=84)
 
 print(json.dumps({slug: palette(ims) for slug, ims in groups.items()}))
+
+build_lqip.build()

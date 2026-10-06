@@ -100,7 +100,7 @@ button { font: inherit; color: inherit; }
 @keyframes foil { to { background-position: 200% 0; } }
 
 .grain {
-  position: fixed; inset: -50%; z-index: 70; pointer-events: none;
+  position: fixed; inset: 0; z-index: 70; pointer-events: none;
   background-image: var(--noise); opacity: .055; mix-blend-mode: overlay;
 }
 /* Warm light that trails the mouse behind the content */
@@ -110,6 +110,10 @@ button { font: inherit; color: inherit; }
   background: radial-gradient(closest-side, rgba(233, 205, 140, .15), rgba(150, 52, 46, .08) 45%, transparent 75%);
 }
 html.cursor-on .glow { opacity: 1; }
+html:not(.has-cursor) .glow { display: none; }
+
+/* Blurred preview (lqip.js) painted behind an image until the image itself arrives */
+.lq { background-size: cover; background-position: center; }
 
 .skip { position: absolute; left: 16px; top: -120px; z-index: 90; background: var(--gold); color: var(--noir); padding: 10px 14px; text-decoration: none; }
 .skip:focus { top: 12px; }
@@ -315,15 +319,23 @@ html.cursor-on .glow { opacity: 1; }
 .count { color: var(--pearl-3); }
 
 .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 72px clamp(28px, 4.5vw, 80px); }
-.grid .card:nth-child(even) { margin-top: clamp(70px, 10vw, 170px); }
+.grid .card.low { margin-top: clamp(70px, 10vw, 170px); }
 /* Scroll speed bends the cards (--skew) and lets the right column trail behind (--lag). */
-.card { display: block; color: inherit; text-decoration: none; transform: skewY(var(--skew, 0deg)); }
-.grid .card:nth-child(even) { translate: 0 var(--lag, 0px); }
+.card { display: block; color: inherit; text-decoration: none; }
+html.has-cursor .card { transform: skewY(var(--skew, 0deg)); }
+html.has-cursor .grid .card.low { translate: 0 var(--lag, 0px); }
+/* Cards that come back after a filter change rise in one after another. */
+.card.enter { animation: cardin .8s var(--ease) both; animation-delay: calc(min(var(--i, 0), 6) * 70ms); }
+@keyframes cardin { from { opacity: 0; scale: .96; } }
 .card .frame {
   position: relative; display: block; aspect-ratio: 3 / 2; overflow: hidden; border-radius: 4px; background: var(--noir-3);
-  transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  background-size: cover; background-position: center;
   transition: transform .7s var(--ease), box-shadow .7s ease;
 }
+/* The 3D tilt is only set up with a mouse: on phones 20 permanent 3D layers made scrolling flicker. */
+html.has-cursor .card .frame { transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); }
+/* The real image fades in over the blurred preview once it has loaded. */
+.card .frame img.main:not(.ok) { opacity: 0; }
 .card:hover .frame { box-shadow: 0 40px 80px rgba(0, 0, 0, .5); }
 .card .frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity .9s ease, transform 1.6s var(--ease); }
 .card .frame img.alt { opacity: 0; }
@@ -353,7 +365,7 @@ html.has-cursor .card:focus-visible .frame img.alt { --lr: 2000px; }
 .card h3 { margin: 14px 0 0; font-family: var(--serif); font-weight: 400; font-size: clamp(2rem, 3.2vw, 3rem); line-height: 1; letter-spacing: -.01em; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; }
 .card h3 em { font-size: .52em; color: var(--pearl-2); }
 @supports (animation-timeline: view()) {
-  .card .frame img:first-child { animation: settle linear both; animation-timeline: view(); animation-range: entry 0% cover 45%; }
+  .card .frame img.main { animation: settle linear both; animation-timeline: view(); animation-range: entry 0% cover 45%; }
   @keyframes settle { from { scale: 1.16; } }
 }
 
@@ -646,7 +658,8 @@ html.has-cursor .card:focus-visible .frame img.alt { --lr: 2000px; }
 
 /* ---------- Cursor and gold dust ---------- */
 .fx { position: fixed; inset: 0; z-index: 9999; pointer-events: none; }
-#fx-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.fx { overflow: hidden; }
+#fx-canvas { position: absolute; left: 0; top: 0; }
 .c-dot, .c-ring { position: absolute; left: 0; top: 0; opacity: 0; transition: opacity .3s ease; }
 html.cursor-on .c-dot, html.cursor-on .c-ring { opacity: 1; }
 .c-dot { width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%; background: var(--gold-hi); box-shadow: 0 0 12px rgba(243, 220, 162, .9); }
@@ -679,7 +692,7 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
   :root { --bar: 64px; }
   .bar .fxbtn { display: none; }
   .grid { grid-template-columns: minmax(0, 1fr); gap: 64px; }
-  .grid .card:nth-child(even) { margin-top: 0; translate: none; }
+  .grid .card.low { margin-top: 0; translate: none; }
   .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .disc-list button { grid-template-columns: 2.2rem 64px minmax(0, 1fr) 22px; gap: 14px; padding: 18px 0; }
   .disc-list .dthumb { display: block; width: 64px; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 3px; }
@@ -702,7 +715,14 @@ html.calm { scroll-behavior: auto; }
 html.calm .h1 .ln > span, html.calm .intro, html.calm .hero-cta, html.calm .float-in, html.calm .float img,
 html.calm .mq-track, html.calm .mini-float, html.calm .mini-shadow, html.calm .b-hover, html.calm .b-shadow,
 html.calm .scrollcue i::after, html.calm .pdlg .pd-in, html.calm .pd-intro > *, html.calm .pd-body.swap,
-html.calm [data-reveal], html.calm .card .frame img:first-child { animation: none !important; }
+html.calm [data-reveal], html.calm .card .frame img.main, html.calm .card.enter { animation: none !important; }
+
+/* Touch screens: no film grain blend layer, and the gold text keeps its gradient without
+   repainting every frame. Both kept phones redrawing large areas while scrolling, which flickered. */
+@media (hover: none) {
+  .grain { display: none; }
+  .foil, h1 em, h2 em, .disc-list button:hover .dt, .mq-set span:hover, .cv-mono b, .cv-title { animation: none; }
+}
 </style>
 </head>
 <body>
@@ -890,6 +910,7 @@ html.calm [data-reveal], html.calm .card .frame img:first-child { animation: non
 
 <div class="fx" id="fx" aria-hidden="true"><canvas id="fx-canvas"></canvas><div class="c-ring"><i class="c-blob"></i><span></span></div><div class="c-dot"></div></div>
 
+<script src="lqip.js"></script>
 <script src="content.js"></script>
 <script>
 (() => {
@@ -898,6 +919,10 @@ html.calm [data-reveal], html.calm .card .frame img:first-child { animation: non
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const LQ = window.LQIP || {};
+  // style attribute that paints the blurred preview of img/<key>-sm.webp behind an element;
+  // extra puts other background layers (such as a smaller copy of the image) on top of it
+  const lq = (key, extra = "") => (LQ[key] ? ` style="background-image:${extra}url(${LQ[key]})"` : "");
   const store = {
     get(k) { try { return localStorage.getItem(k); } catch { return null; } },
     set(k, v) { try { localStorage.setItem(k, v); } catch {} },
@@ -920,13 +945,17 @@ html.calm [data-reveal], html.calm .card .frame img:first-child { animation: non
     const layer = $("#fx"), cv = $("#fx-canvas"), ctx = cv.getContext("2d");
     const C = ["255,238,196", "238,205,140", "214,176,100", "255,250,232", "196,150,78"];
     const P = [], R = [], F = [];
-    let W = 0, H = 0, raf = 0;
+    let W = 0, H = 0, D = 0, CH = 0, raf = 0;
     const rnd = (a, b) => a + Math.random() * (b - a);
     const col = () => C[(Math.random() * C.length) | 0];
     function size() {
-      const d = Math.min(2, window.devicePixelRatio || 1);
-      W = innerWidth; H = innerHeight;
-      cv.width = W * d; cv.height = H * d;
+      const d = Math.min(2, window.devicePixelRatio || 1), w = innerWidth, h = innerHeight;
+      // A phone's address bar showing or hiding only changes the height. Reallocating a
+      // full-screen canvas for that made the screen flash, so keep the canvas when it is tall enough.
+      if (w === W && d === D && h <= CH) { H = h; return; }
+      W = w; H = h; D = d; CH = h + 160;
+      cv.width = W * d; cv.height = CH * d;
+      cv.style.width = W + "px"; cv.style.height = CH + "px";
       ctx.setTransform(d, 0, 0, d, 0, 0);
     }
     size();
@@ -1041,10 +1070,16 @@ html.calm [data-reveal], html.calm .card .frame img:first-child { animation: non
     addEventListener("pointerdown", () => html.classList.add("cursor-down"));
     addEventListener("pointerup", () => html.classList.remove("cursor-down"));
   }
+  // A mouse press bursts at once. On touch screens every scroll starts with a touch, so only a
+  // finished tap (a click) bursts there; bursting on each touch made the phone screen flicker.
+  let lastPointer = "mouse";
   addEventListener("pointerdown", e => {
-    if (e.button > 0) return;
-    FX.burst(e.clientX, e.clientY, fine ? 26 : 18, 1);
+    lastPointer = e.pointerType;
+    if (e.pointerType === "mouse" && e.button === 0) FX.burst(e.clientX, e.clientY, 26, 1);
   }, { passive: true });
+  addEventListener("click", e => {
+    if (lastPointer !== "mouse" && e.detail > 0) FX.burst(e.clientX, e.clientY, 16, .8);
+  }, true);
 
   /* ================= Language ================= */
   const EN = {};
@@ -1112,20 +1147,45 @@ html.calm [data-reveal], html.calm .card .frame img:first-child { animation: non
     ).join("");
   }
 
+  // All 20 cards are built once per language; filters only show and hide them, so images
+  // that have loaded stay on screen instead of being fetched and decoded again.
   function renderGrid() {
-    const items = S.projects.map((p, i) => [p, i]).filter(([p]) => filter === "all" || p.cat === filter);
-    grid.innerHTML = items.map(([p, i]) => `
-      <a class="card" href="#p-${p.slug}" data-open="${p.slug}" data-cursor="view">
-        <span class="frame">
-          <img src="img/${p.slug}-1-sm.webp" alt="${esc(p.name)}, ${esc(L(p.caps[0]))}" width="760" height="507" loading="lazy" decoding="async">
+    grid.innerHTML = S.projects.map((p, i) => `
+      <a class="card" href="#p-${p.slug}" data-open="${p.slug}" data-cat="${esc(p.cat)}" data-cursor="view">
+        <span class="frame"${lq(`${p.slug}-1`)}>
+          <img class="main" src="img/${p.slug}-1-sm.webp" alt="${esc(p.name)}, ${esc(L(p.caps[0]))}" width="760" height="507" loading="lazy" decoding="async">
           <img class="alt" src="img/${p.slug}-2-sm.webp" alt="" width="760" height="507" loading="lazy" decoding="async">
           <span class="glare"></span>
         </span>
         <span class="meta"><span class="no">${pad(i + 1)}</span><span>${esc(L(S.categories[p.cat]))}</span><span class="vis">${esc(ui("visuals"))}</span></span>
         <h3>${esc(p.name)} <em>${esc(L(p.sub))}</em></h3>
       </a>`).join("");
-    $("#count").textContent = plural(items.length);
+    $$("img.main", grid).forEach(fadeIn);
     if (fine) $$(".card", grid).forEach(bindTilt);
+    applyFilter(false);
+  }
+
+  function applyFilter(animate) {
+    let n = 0;
+    $$(".card", grid).forEach(c => {
+      const show = filter === "all" || c.dataset.cat === filter;
+      c.hidden = !show;
+      c.classList.remove("enter");
+      if (!show) return;
+      c.classList.toggle("low", n % 2 === 1);
+      c.style.setProperty("--i", n);
+      if (animate && !calm) { void c.offsetWidth; c.classList.add("enter"); }
+      n++;
+    });
+    $("#count").textContent = plural(n);
+  }
+
+  // The image starts transparent over its blurred preview and fades in once loaded and decoded.
+  function fadeIn(img) {
+    const show = () => img.classList.add("ok");
+    if (img.complete && img.naturalWidth) { show(); return; }
+    img.addEventListener("load", () => { img.decode().catch(() => {}).then(show); }, { once: true });
+    img.addEventListener("error", show, { once: true });
   }
 
   function bindTilt(card) {
@@ -1145,7 +1205,7 @@ html.calm [data-reveal], html.calm .card .frame img:first-child { animation: non
     $("#disc-list").innerHTML = S.disciplines.map((d, i) => `
       <li><button type="button" data-filter="${esc(d.cat)}" data-img="${d.img}" data-cursor="filter">
         <span class="dn">${pad(i + 1)}</span>
-        <img class="dthumb" src="img/${d.img}-sm.webp" alt="" width="760" height="507" loading="lazy">
+        <img class="dthumb lq" src="img/${d.img}-sm.webp" alt="" width="760" height="507" loading="lazy"${lq(d.img)}>
         <span class="dt">${esc(L(d.t))}</span>
         <span class="dc">${esc(plural(count(d.cat)))}</span>
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 19 5M8 5h11v11"/></svg>
@@ -1166,13 +1226,22 @@ html.calm [data-reveal], html.calm .card .frame img:first-child { animation: non
       pv.style.transform = `translate3d(${px}px,${py}px,0)`;
       run = on || Math.abs(tx - px) + Math.abs(ty - py) > .5 ? requestAnimationFrame(step) : 0;
     };
+    pv.classList.add("lq");
+    list.addEventListener("pointerenter", () => {
+      if (list.dataset.warm) return;
+      list.dataset.warm = "1";
+      S.disciplines.forEach(d => { new Image().src = `img/${d.img}-sm.webp`; });
+    });
     list.addEventListener("pointermove", e => {
       const b = e.target.closest("[data-img]");
       tx = e.clientX + 340 > innerWidth ? e.clientX - 350 : e.clientX + 30;
       ty = e.clientY - 107;
       if (b) {
         const src = `img/${b.dataset.img}-sm.webp`;
-        if (!pimg.src.endsWith(src)) pimg.src = src;
+        if (!pimg.src.endsWith(src)) {
+          if (LQ[b.dataset.img]) pv.style.backgroundImage = `url(${LQ[b.dataset.img]})`;
+          pimg.src = src;
+        }
         if (!on) { on = true; px = tx; py = ty; pv.classList.add("show"); }
       }
       if (!run) run = requestAnimationFrame(step);
@@ -1341,8 +1410,11 @@ html.calm [data-reveal], html.calm .card .frame img:first-child { animation: non
     vel += (raw - vel) * .12;
     if (Math.abs(raw) > .4) mqDir = raw > 0 ? 1 : -1;
     const v = Math.abs(vel) < .02 ? 0 : vel;
-    grid.style.setProperty("--skew", `${Math.max(-4, Math.min(4, v * .09)).toFixed(3)}deg`);
-    grid.style.setProperty("--lag", `${Math.max(-56, Math.min(56, v * 1.3)).toFixed(1)}px`);
+    // Bending the cards is for mouse users; on phones it fought the native momentum scroll.
+    if (fine) {
+      grid.style.setProperty("--skew", `${Math.max(-4, Math.min(4, v * .09)).toFixed(3)}deg`);
+      grid.style.setProperty("--lag", `${Math.max(-56, Math.min(56, v * 1.3)).toFixed(1)}px`);
+    }
     const track = mq.firstElementChild;
     if (mqSeen && track) {
       track.classList.add("js");
@@ -1434,14 +1506,14 @@ html.calm [data-reveal], html.calm .card .frame img:first-child { animation: non
       </div>
       <div class="pd-gallery">${p.caps.map((cap, k) => `
         <figure class="${k === 0 ? "wide" : ""}">
-          <img src="img/${p.slug}-${k + 1}.webp" alt="${esc(p.name)}, ${esc(L(cap))}" width="1536" height="1024" decoding="async"${k ? ' loading="lazy"' : ""}>
+          <img class="lq" src="img/${p.slug}-${k + 1}.webp" alt="${esc(p.name)}, ${esc(L(cap))}" width="1536" height="1024" decoding="async"${k ? ' loading="lazy"' : ""}${lq(`${p.slug}-${k + 1}`, `url(img/${p.slug}-${k + 1}-sm.webp),`)}>
           <figcaption class="mono"><span>${pad(k + 1)}</span>${esc(L(cap))}</figcaption>
         </figure>`).join("")}
       </div>
       <div class="pd-end">
         <span class="mono">${esc(p.cat === "Motion concepts" ? ui("endMotion") : ui("end"))}</span>
         <button type="button" class="pd-next" data-goto="${cur + 1}" data-cursor="view">
-          <img src="img/${next.slug}-1-sm.webp" alt="" width="760" height="507">
+          <img class="lq" src="img/${next.slug}-1-sm.webp" alt="" width="760" height="507"${lq(`${next.slug}-1`)}>
           <span><small class="mono">${esc(ui("next"))}</small><b>${esc(next.name)}</b></span>
         </button>
       </div>`;
@@ -1504,7 +1576,7 @@ html.calm [data-reveal], html.calm .card .frame img:first-child { animation: non
       `<div class="fi page">${head(b, 3)}<h3 class="pg-title">${esc(b.c3t)}</h3><div class="pg-big"><b>5.0</b><span>★★★★★</span></div><p class="pg-cap">${esc(b.rating)}</p><ul class="pg-facts"><li>${esc(b.level)}</li><li>${esc(b.eng)}</li></ul><p class="pg-sub">${esc(b.recent)}</p><ul class="pg-jobs"><li><b>${esc(b.job1)}</b><span>${esc(b.job1w)} · ★ 5.0</span></li><li><b>${esc(b.job2)}</b><span>${esc(b.job2w)} · ★ 5.0</span></li></ul>${folio(3)}</div>`,
       `<div class="fi page">${head(b, 4)}<h3 class="pg-title">${esc(b.c4t)}</h3><blockquote class="pg-quote">${esc(b.quote)}</blockquote><p class="pg-by">${esc(b.by)}${b.qnote ? ` <em>· ${esc(b.qnote)}</em>` : ""}</p><ul class="pg-scores"><li><span>${esc(b.q1)}</span><b>5.0</b></li><li><span>${esc(b.q2)}</span><b>5.0</b></li><li><span>${esc(b.q3)}</span><b>5.0</b></li></ul>${folio(4)}</div>`,
       `<div class="fi page">${head(b, 5)}<h3 class="pg-title">${esc(b.c5t)}</h3><ol class="pg-svc">${C.services.map((s, i) => `<li><span class="n">${pad(i + 1)}</span><span><b>${esc(L(s.t))}</b><em>${esc(L(s.d))}</em></span></li>`).join("")}</ol>${folio(5)}</div>`,
-      `<div class="fi page">${head(b, 6)}<h3 class="pg-title">${esc(b.c6t)}</h3><p class="pg-p">${esc(b.c6p)}</p><div class="pg-thumbs">${C.thumbs.map(s => `<img src="img/${s}-sm.webp" alt="" width="760" height="507" loading="lazy">`).join("")}</div><button type="button" class="pg-link" data-seework>${esc(b.c6link)} →</button>${folio(6)}</div>`,
+      `<div class="fi page">${head(b, 6)}<h3 class="pg-title">${esc(b.c6t)}</h3><p class="pg-p">${esc(b.c6p)}</p><div class="pg-thumbs">${C.thumbs.map(s => `<img class="lq"${lq(s)} src="img/${s}-sm.webp" alt="" width="760" height="507" loading="lazy">`).join("")}</div><button type="button" class="pg-link" data-seework>${esc(b.c6link)} →</button>${folio(6)}</div>`,
       `<div class="fi page finale"><p class="pg-kick">${esc(b.ch)} ${ROMAN[7]}</p><h3 class="pg-final">${b.c7t}</h3><p class="pg-p">${esc(b.c7p)}</p><a class="pg-cta" href="${esc(S.workana)}" target="_blank" rel="noopener">${esc(b.c7cta)} ↗</a><p class="pg-sign">${esc(b.sign)}</p>${folio(7)}</div>`,
       `<div class="fi cover"><span class="cv-frame"></span><span class="cv-mono"><b>N</b></span><span class="cv-rule"></span><span class="cv-vol">${esc(b.back)}</span></div>`,
     ];
@@ -1696,7 +1768,7 @@ html.calm [data-reveal], html.calm .card .frame img:first-child { animation: non
     if (f) {
       filter = f.dataset.filter;
       renderFilters();
-      renderGrid();
+      applyFilter(true);
       if (!f.classList.contains("chip")) $("#work").scrollIntoView({ behavior: calm ? "auto" : "smooth" });
       return;
     }
@@ -1707,7 +1779,26 @@ html.calm [data-reveal], html.calm .card .frame img:first-child { animation: non
   });
 
   /* ================= Start ================= */
+  $$(".float img").forEach(img => {
+    const key = img.getAttribute("src").replace(/^img\/|-sm\.webp$/g, "");
+    if (LQ[key]) { img.classList.add("lq"); img.style.backgroundImage = `url(${LQ[key]})`; }
+  });
   setLang(pickLang(), false);
+  // Once the page is idle, fetch the card images one by one at low priority, so they are
+  // already in the cache when the visitor scrolls or filters to them.
+  addEventListener("load", () => {
+    const queue = S.projects.map(p => `img/${p.slug}-1-sm.webp`);
+    if (fine) queue.push(...S.projects.map(p => `img/${p.slug}-2-sm.webp`));
+    const next = () => {
+      const src = queue.shift();
+      if (!src) return;
+      const im = new Image();
+      im.fetchPriority = "low";
+      im.onload = im.onerror = next;
+      im.src = src;
+    };
+    (window.requestIdleCallback || (f => setTimeout(f, 1200)))(next, { timeout: 2500 });
+  });
   const deep = location.hash.match(/^#p-([a-z0-9-]+)$/);
   if (deep) openProject(deep[1]);
 })();
