@@ -508,7 +508,7 @@ html.has-cursor .card:focus-visible .frame img.alt { --lr: 2000px; }
 .pd-next b { font: 400 clamp(1.8rem, 3vw, 2.6rem)/1 var(--serif); }
 
 /* ---------- Career book ---------- */
-.cdlg { padding: 0; margin: 0; border: 0; width: 100%; height: 100%; max-width: 100%; max-height: 100%; background: transparent; overflow: hidden; color: var(--ink); }
+.cdlg { padding: 0; margin: 0; border: 0; width: 100%; height: 100%; max-width: 100%; max-height: 100%; background: transparent; overflow: hidden; color: var(--ink); overscroll-behavior: contain; touch-action: none; }
 .cdlg::backdrop { background: transparent; }
 .c-veil {
   position: absolute; inset: 0; opacity: 0; transition: opacity .7s ease;
@@ -516,7 +516,7 @@ html.has-cursor .card:focus-visible .frame img.alt { --lr: 2000px; }
   backdrop-filter: blur(16px) saturate(.85); -webkit-backdrop-filter: blur(16px) saturate(.85);
 }
 .cdlg.on .c-veil { opacity: 1; }
-.c-stage { position: absolute; inset: 0; display: grid; place-items: center; perspective: 1900px; padding-bottom: 58px; touch-action: pan-y; }
+.c-stage { position: absolute; inset: 0; display: grid; place-items: center; perspective: 1900px; padding-bottom: 58px; touch-action: none; }
 .b-fly { position: relative; width: calc(var(--pw) * 2); height: var(--ph); transform-style: preserve-3d; }
 .c-stage.single .b-fly { width: var(--pw); }
 .b-hover { width: 100%; height: 100%; transform-style: preserve-3d; animation: bookhover 7s ease-in-out infinite; }
@@ -553,8 +553,16 @@ html.has-cursor .card:focus-visible .frame img.alt { --lr: 2000px; }
 .book.fast .face { transition-delay: .25s; }
 /* One page at a time: a turned page fades out once it has turned. The fade sits on the faces,
    because Safari ignores opacity on a 3D leaf. */
-.book.single .face { transition: visibility 0s linear .575s, opacity .3s ease; }
-.book.single .leaf.flipped .face { opacity: 0; transition: visibility 0s linear .575s, opacity .45s ease .62s; }
+.book.fast.single .leaf { transition-duration: .5s; }
+/* One page at a time (phones, tablets, narrow windows): no shared 3D scene at all. Each page is a flat
+   sheet that swings up off the spine until it is edge-on and gone, uncovering the page beneath.
+   Nothing relies on backface-visibility or depth sorting, which phone browsers get wrong. */
+.c-stage.single .b-fly, .c-stage.single .b-hover, .book.single .leaf { transform-style: flat; }
+.book.single .leaf { transform: perspective(1600px) rotateY(0deg); transition: transform .85s cubic-bezier(.25, .8, .35, 1), visibility 0s; }
+.book.single .leaf.flipped { transform: perspective(1600px) rotateY(-90deg); visibility: hidden; transition: transform .85s cubic-bezier(.55, 0, .75, .3), visibility 0s .85s; }
+.book.single .face.back { display: none; }
+.book.single .face, .book.single .leaf.flipped .face { visibility: inherit; transform: none; transition: none; }
+.book.single .leaf.turning .face::after { animation-duration: .85s; }
 .face::after { content: ""; position: absolute; inset: 0; z-index: 6; pointer-events: none; opacity: 0; background: linear-gradient(90deg, rgba(0, 0, 0, .38), rgba(0, 0, 0, 0) 65%); }
 .face.back::after { background: linear-gradient(270deg, rgba(0, 0, 0, .38), rgba(0, 0, 0, 0) 65%); }
 .leaf.turning .face::after { animation: turnshade 1.15s ease; }
@@ -1603,11 +1611,14 @@ html.calm [data-reveal], html.calm .card .frame img.main, html.calm .card.enter 
     ];
   }
 
-  const modeFor = () => (innerWidth < 760 ? "single" : "spread");
+  // Touch screens always get one page at a time: the two-page spread needs a real 3D scene,
+  // and phone browsers drew it wrongly (back pages on top, flicker).
+  const modeFor = () => (innerWidth < 760 || !fine ? "single" : "spread");
   const maxK = () => (mode === "spread" ? N : N - 1);
 
   function layoutBook() {
     const vw = innerWidth, vh = innerHeight, single = mode === "single";
+    bookW = vw;
     let pw = single ? Math.min(420, vw - 40) : Math.min(470, (vw - 150) / 2);
     pw = Math.floor(Math.min(pw, (vh - (single ? 160 : 170)) / 1.4));
     stage.style.setProperty("--pw", pw + "px");
@@ -1788,6 +1799,7 @@ html.calm [data-reveal], html.calm .card .frame img.main, html.calm .card.enter 
     sx = null;
     if (Math.abs(dx) > 60) { swiped = true; go(dx < 0 ? k + 1 : k - 1); setTimeout(() => { swiped = false; }, 400); }
   });
+  let bookW = innerWidth;
   addEventListener("resize", () => {
     if (!cd.open) return;
     const nm = modeFor();
@@ -1796,7 +1808,9 @@ html.calm [data-reveal], html.calm .card .frame img.main, html.calm .card.enter 
       k = nm === "single" ? Math.min(2 * k, faceCount - 1) : Math.ceil(k / 2);
       buildBook();
       applyState(true);
-    } else layoutBook();
+    } else if (innerWidth !== bookW || fine) layoutBook();
+    // On a phone, only the address bar moving changes the height: the book keeps its size then,
+    // or it would jump each time.
   });
 
   /* ================= Global clicks ================= */
