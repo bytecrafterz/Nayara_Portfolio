@@ -65,6 +65,9 @@
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 html.locked { overflow: hidden; }
+/* While the book or a project is open, everything behind it holds still instead of redrawing unseen. */
+html.locked main *, html.locked main *::before, html.locked main *::after,
+html.locked .bar *, html.locked .bar *::before, html.locked .bar *::after { animation-play-state: paused !important; }
 body {
   margin: 0;
   background: var(--noir);
@@ -521,11 +524,8 @@ html.has-cursor .card:focus-visible .frame img.alt { --lr: 2000px; }
 .c-stage.single .b-fly { width: var(--pw); }
 .b-hover { width: 100%; height: 100%; transform-style: preserve-3d; animation: bookhover 7s ease-in-out infinite; }
 @keyframes bookhover { 0%, 100% { transform: translateY(0) rotateX(6deg) rotateZ(-.5deg); } 50% { transform: translateY(-14px) rotateX(4deg) rotateZ(.5deg); } }
-/* Phones: float without the 3D tilt (re-sorting the pages in depth every frame flickered in Safari),
-   and no live blur behind the book; the veil is nearly opaque there anyway. */
-@keyframes bookfloat { 0%, 100% { transform: translateY(0) rotate(-.4deg); } 50% { transform: translateY(-10px) rotate(.4deg); } }
-@media (hover: none) {
-  .b-hover { animation-name: bookfloat; }
+/* Phones: no live blur behind the book; the veil is nearly opaque there anyway. */
+@media (hover: none), (pointer: coarse) {
   .c-veil { backdrop-filter: none; -webkit-backdrop-filter: none; }
 }
 .b-shadow { position: absolute; left: 12%; right: 12%; bottom: calc(var(--ph) * -.13); height: calc(var(--ph) * .07); background: radial-gradient(closest-side, rgba(0, 0, 0, .7), transparent); filter: blur(8px); animation: bookshadow 7s ease-in-out infinite; }
@@ -748,9 +748,16 @@ html.calm [data-reveal], html.calm .card .frame img.main, html.calm .card.enter 
 
 /* Touch screens: no film grain blend layer, and the gold text keeps its gradient without
    repainting every frame. Both kept phones redrawing large areas while scrolling, which flickered. */
-@media (hover: none) {
+@media (hover: none), (pointer: coarse) {
   .grain { display: none; }
   .foil, h1 em, h2 em, .disc-list button:hover .dt, .mq-set span:hover, .cv-mono b, .cv-title { animation: none; }
+  /* Nothing on a phone moves or redraws on its own. A slowly floating, tilting page made thin text
+     and dotted rules shimmer, and the gold sparkle layer flashed on every tap and page turn.
+     Page turns, the book's entrance and scrolling effects stay. */
+  .fx { display: none; }
+  .b-hover, .b-shadow, .mini-float, .mini-shadow { animation: none; }
+  .bar.scrolled { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(11, 10, 9, .94); }
+  .book.single .face { backface-visibility: visible; -webkit-backface-visibility: visible; }
 }
 </style>
 </head>
@@ -990,7 +997,7 @@ html.calm [data-reveal], html.calm .card .frame img.main, html.calm .card.enter 
     size();
     addEventListener("resize", size);
     const kick = () => { if (!raf) raf = requestAnimationFrame(tick); };
-    function add(p) { if (P.length < 700) P.push(p); kick(); }
+    function add(p) { if (!fine) return; if (P.length < 700) P.push(p); kick(); }
     function tick() {
       ctx.clearRect(0, 0, W, H);
       ctx.globalCompositeOperation = "lighter";
@@ -1050,6 +1057,7 @@ html.calm [data-reveal], html.calm .card .frame img.main, html.calm .card.enter 
           const a = i / 8 * Math.PI * 2 + rnd(-.2, .2), sp = rnd(5, 8) * power;
           add({ x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, g: 0, drag: .88, life: 1, decay: rnd(.05, .07), s: rnd(1, 1.6), c: col(), streak: true });
         }
+        if (!fine) return;
         F.push({ x, y, r: 8, to: 120 * power, life: 1 });
         R.push({ x, y, r: 2, to: 44 * power, life: 1, w: 1.3 }, { x, y, r: 2, to: 80 * power, life: .7, w: .7 });
         kick();
@@ -1099,16 +1107,10 @@ html.calm [data-reveal], html.calm .card .frame img.main, html.calm .card.enter 
     addEventListener("pointerdown", () => html.classList.add("cursor-down"));
     addEventListener("pointerup", () => html.classList.remove("cursor-down"));
   }
-  // A mouse press bursts at once. On touch screens every scroll starts with a touch, so only a
-  // finished tap (a click) bursts there; bursting on each touch made the phone screen flicker.
-  let lastPointer = "mouse";
+  // Gold bursts are for mouse clicks only. On phones every burst, even only on taps, read as a flicker.
   addEventListener("pointerdown", e => {
-    lastPointer = e.pointerType;
     if (e.pointerType === "mouse" && e.button === 0) FX.burst(e.clientX, e.clientY, 26, 1);
   }, { passive: true });
-  addEventListener("click", e => {
-    if (lastPointer !== "mouse" && e.detail > 0) FX.burst(e.clientX, e.clientY, 16, .8);
-  }, true);
 
   /* ================= Language ================= */
   const EN = {};
@@ -1432,6 +1434,7 @@ html.calm [data-reveal], html.calm .card .frame img.main, html.calm .card.enter 
   mq.addEventListener("pointerleave", () => { mqHover = false; });
   addEventListener("resize", () => { mqW = 0; });
   function flow(t) {
+    if (html.classList.contains("locked")) { flowId = 0; lastT = 0; return; }
     const dt = lastT ? Math.min(3, (t - lastT) / 16.67) : 1;
     lastT = t;
     const y = scrollY, raw = (y - lastY) / dt;
@@ -1505,7 +1508,7 @@ html.calm [data-reveal], html.calm .card .frame img.main, html.calm .card.enter 
     FX.host(d);
   }
   function dialogClosed() {
-    if (!pd.open && !cd.open) { html.classList.remove("locked"); FX.host(document.body); }
+    if (!pd.open && !cd.open) { html.classList.remove("locked"); FX.host(document.body); kickFlow(); }
     lastFocus?.focus?.({ preventScroll: true });
   }
 
