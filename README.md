@@ -47,7 +47,7 @@ The second version of the portfolio: the 20 concept projects from the ChatGPT "S
 
 ## Publishing
 
-Live at **https://portfolio-self-two-17.vercel.app/**. Vercel publishes every push to `main` on GitHub on its own; `.vercelignore` keeps `source/`, `tools/` and `deploy/` off the live site. If the address changes, update `og:url`, `og:image`, `twitter:image` and `canonical` in `index.html`.
+Live at **https://nayaraportfolio.vercel.app/**. Vercel publishes every push to `main` on GitHub on its own; `.vercelignore` keeps `source/`, `tools/` and `deploy/` off the live site. If the address changes, update `og:url`, `og:image`, `twitter:image` and `canonical` in `index.html`.
 
 `deploy/` is only needed to host on your own Ubuntu server instead (`deploy/deploy.sh setup user@host domain`, then `push`).
 
