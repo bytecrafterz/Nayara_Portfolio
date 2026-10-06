@@ -12,8 +12,19 @@ The second version of the portfolio: the 20 concept projects from the ChatGPT "S
   - Laptop: two‑page spreads.
   - Phone: one page at a time.
   - Turn pages with a click, the arrows, ← →, or a swipe.
-- **Mouse and click effects:** a gold cursor ring that says View / Open / Filter / Close over things you can click, a gold‑dust trail behind the mouse, a gold burst on every click or tap, and magnetic buttons.
-- People who turn on "reduce motion" in their system settings get the same page without the animations.
+- **Mouse and click effects:**
+  - The gold cursor ring stretches like liquid as it moves, and says View / Open / Filter / Close over things you can click.
+  - A gold‑dust trail follows the mouse, with a warm light behind the page.
+  - Every click or tap sets off a gold burst with a flash.
+  - The headline letters spring away from the cursor and light up gold.
+  - On a project card, a lens around the cursor shows the second image.
+  - Filters and the Close button fill with liquid gold from the side the mouse enters.
+  - Buttons are magnetic and bounce back when the mouse leaves.
+  - Project images trail the mouse across the Contact section.
+- **Scroll effects:** cards bend with scroll speed and the right column trails a little behind. The marquee speeds up and follows the scroll direction.
+- **FX switch** (✦ FX in the top bar, "Motion effects" in the footer): turns the intro, drifting, scroll and flying motion on or off, and the browser remembers the choice.
+  - It starts off when the computer asks for reduced motion. Windows does this when "Animation effects" is off, which is the default on Windows Server and over Remote Desktop.
+  - Mouse, hover and click effects stay on either way. The book still fades in and turns its cover.
 
 ## Files
 

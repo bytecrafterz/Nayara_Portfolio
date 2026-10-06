@@ -341,9 +341,9 @@ window.SITE = {
 
   /* Labels the script writes into the page. */
   ui: {
-    en: { all: "All", project: "project", projects: "projects", visuals: "3 visuals", view: "View", open: "Open", close: "Close", filter: "Filter", concept: "Concept study", stack: "Suggested production stack", palette: "Palette", next: "Next project", end: "Independent concept exploration", endMotion: "Still keyframes / visual treatment" },
-    pt: { all: "Todos", project: "projeto", projects: "projetos", visuals: "3 visuais", view: "Ver", open: "Abrir", close: "Fechar", filter: "Filtrar", concept: "Estudo de conceito", stack: "Stack de produção sugerido", palette: "Paleta", next: "Próximo projeto", end: "Exploração de conceito independente", endMotion: "Quadros-chave estáticos / tratamento visual" },
-    es: { all: "Todos", project: "proyecto", projects: "proyectos", visuals: "3 visuales", view: "Ver", open: "Abrir", close: "Cerrar", filter: "Filtrar", concept: "Estudio de concepto", stack: "Stack de producción sugerido", palette: "Paleta", next: "Siguiente proyecto", end: "Exploración de concepto independiente", endMotion: "Fotogramas clave fijos / tratamiento visual" },
+    en: { all: "All", project: "project", projects: "projects", visuals: "3 visuals", view: "View", open: "Open", close: "Close", filter: "Filter", concept: "Concept study", stack: "Suggested production stack", palette: "Palette", next: "Next project", end: "Independent concept exploration", endMotion: "Still keyframes / visual treatment", motion: "Motion effects", on: "On", off: "Off" },
+    pt: { all: "Todos", project: "projeto", projects: "projetos", visuals: "3 visuais", view: "Ver", open: "Abrir", close: "Fechar", filter: "Filtrar", concept: "Estudo de conceito", stack: "Stack de produção sugerido", palette: "Paleta", next: "Próximo projeto", end: "Exploração de conceito independente", endMotion: "Quadros-chave estáticos / tratamento visual", motion: "Efeitos de movimento", on: "Ligados", off: "Desligados" },
+    es: { all: "Todos", project: "proyecto", projects: "proyectos", visuals: "3 visuales", view: "Ver", open: "Abrir", close: "Cerrar", filter: "Filtrar", concept: "Estudio de concepto", stack: "Stack de producción sugerido", palette: "Paleta", next: "Siguiente proyecto", end: "Exploración de concepto independiente", endMotion: "Fotogramas clave fijos / tratamiento visual", motion: "Efectos de movimiento", on: "Activados", off: "Desactivados" },
   },
 
   /* The "My Career" book. Facts come from the public Workana profile (6 Oct 2026). */

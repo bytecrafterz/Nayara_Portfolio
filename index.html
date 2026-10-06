@@ -20,6 +20,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..600&family=Geist+Mono:wght@400..500&family=Instrument+Serif:ital@0;1&display=swap">
+<script>
+  /* Decide calm or full motion before the first paint: the visitor's own FX choice wins, then the system setting. */
+  (function () {
+    var m = null;
+    try { m = localStorage.getItem("motion"); } catch (e) {}
+    if (m ? m === "calm" : matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("calm");
+  })();
+</script>
 <style>
 /* A private gallery at night: black velvet, pearl type, liquid gold. One dark world by design. */
 :root {
@@ -49,7 +57,10 @@
   --max: 1480px;
   --bar: 72px;
   --ease: cubic-bezier(.19, 1, .22, 1);
+  --mt: .45s var(--ease);
 }
+/* Magnetic elements spring back past their rest point when the cursor leaves. */
+.spring { --mt: 1.1s cubic-bezier(.3, 1.8, .4, 1); }
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
@@ -92,6 +103,13 @@ button { font: inherit; color: inherit; }
   position: fixed; inset: -50%; z-index: 70; pointer-events: none;
   background-image: var(--noise); opacity: .055; mix-blend-mode: overlay;
 }
+/* Warm light that trails the mouse behind the content */
+.glow {
+  position: fixed; left: 0; top: 0; z-index: -1; width: 1000px; height: 1000px; margin: -500px 0 0 -500px;
+  border-radius: 50%; pointer-events: none; opacity: 0; transition: opacity .8s ease;
+  background: radial-gradient(closest-side, rgba(233, 205, 140, .15), rgba(150, 52, 46, .08) 45%, transparent 75%);
+}
+html.cursor-on .glow { opacity: 1; }
 
 .skip { position: absolute; left: 16px; top: -120px; z-index: 90; background: var(--gold); color: var(--noir); padding: 10px 14px; text-decoration: none; }
 .skip:focus { top: 12px; }
@@ -116,13 +134,25 @@ button { font: inherit; color: inherit; }
 .langs button { border: 0; background: none; cursor: pointer; font: 500 .66rem/1 var(--mono); letter-spacing: .14em; padding: 8px 10px; border-radius: 999px; color: var(--pearl-3); transition: color .3s, background .3s; }
 .langs button:hover { color: var(--pearl); }
 .langs button[aria-pressed="true"] { background: var(--foil); background-size: 200% 100%; color: #1d150a; }
+.fxbtn {
+  display: inline-flex; align-items: center; gap: 7px; padding: 9px 13px; border: 1px solid var(--line-2); border-radius: 999px;
+  background: none; cursor: pointer; font: 500 .66rem/1 var(--mono); letter-spacing: .14em; color: var(--pearl-3);
+  transition: color .3s, border-color .3s, transform var(--mt);
+}
+.fxbtn i, .fxlink i { font-style: normal; display: inline-block; transition: color .3s, rotate .7s var(--ease); }
+.fxbtn:hover i, .fxlink:hover i { rotate: 90deg; }
+.fxbtn[aria-pressed="true"] { color: var(--pearl); border-color: rgba(214, 180, 110, .55); }
+.fxbtn[aria-pressed="true"] i, .fxlink[aria-pressed="true"] i { color: var(--gold); }
+.fxlink { border: 0; background: none; padding: 0; cursor: pointer; color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; }
+.fxlink:hover { color: var(--gold); }
+.fxlink b { font-weight: 500; color: var(--pearl); }
 
 /* ---------- "My Career" button ---------- */
 @property --ang { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
 .cbtn {
   position: relative; display: inline-flex; padding: 0; border: 0; background: none; cursor: pointer;
   border-radius: 999px; isolation: isolate; text-align: left;
-  transition: transform .7s var(--ease);
+  transition: transform var(--mt);
 }
 .cbtn-glow {
   position: absolute; inset: -16px; z-index: -1; border-radius: inherit;
@@ -195,10 +225,16 @@ button { font: inherit; color: inherit; }
 .h1 .ln > span { display: inline-block; animation: rise 1.25s var(--ease) both; }
 .h1 .ln:nth-child(2) > span { animation-delay: .14s; }
 @keyframes rise { from { transform: translateY(108%) rotate(3deg); } }
+/* After the intro the letters are free to move, so the line clip comes off. */
+.h1.ready .ln { overflow: visible; }
+.h1 .w { display: inline-block; white-space: nowrap; }
+.h1 .ch { display: inline-block; }
+.h1 span.ch { color: color-mix(in oklab, var(--gold-hi) calc(var(--h, 0) * 100%), var(--pearl)); text-shadow: 0 0 calc(var(--h, 0) * 36px) rgba(233, 205, 140, calc(var(--h, 0) * .6)); }
+.h1 em.ch { filter: drop-shadow(0 0 calc(var(--h, 0) * 22px) rgba(233, 205, 140, calc(var(--h, 0) * .75))); }
 .intro { font-size: clamp(1.05rem, 1.35vw, 1.3rem); line-height: 1.55; color: var(--pearl-2); max-width: 36ch; margin: 0 0 40px; animation: fadeup 1.2s var(--ease) .35s both; }
 @keyframes fadeup { from { opacity: 0; transform: translateY(24px); } }
 .hero-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 22px 36px; animation: fadeup 1.2s var(--ease) .5s both; }
-.explore { display: inline-flex; align-items: baseline; gap: 12px; text-decoration: none; padding-bottom: 6px; border-bottom: 1px solid var(--line-2); transition: border-color .4s; }
+.explore { display: inline-flex; align-items: baseline; gap: 12px; text-decoration: none; padding-bottom: 6px; border-bottom: 1px solid var(--line-2); transition: border-color .4s, transform var(--mt); }
 .explore:hover { border-color: var(--gold); }
 .explore span:first-child { font-size: 1rem; }
 .explore .mono { color: var(--gold); font-size: .64rem; }
@@ -216,9 +252,10 @@ button { font: inherit; color: inherit; }
   width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 5px;
   box-shadow: 0 30px 70px rgba(0, 0, 0, .55), 0 0 0 1px rgba(255, 255, 255, .06);
   animation: drift 10s ease-in-out infinite; animation-delay: var(--d);
-  transition: box-shadow .5s ease, filter .5s ease;
+  transition: box-shadow .5s ease, filter .5s ease, scale .9s var(--ease);
 }
-.float:hover img { box-shadow: 0 30px 80px rgba(0, 0, 0, .6), 0 0 0 1px rgba(214, 180, 110, .7); }
+.float:hover { z-index: 6; }
+.float:hover img { scale: 1.06; box-shadow: 0 40px 90px rgba(0, 0, 0, .65), 0 0 0 1px rgba(214, 180, 110, .7); }
 @keyframes drift { 50% { transform: translateY(-12px); } }
 
 .hero-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px 24px; flex-wrap: wrap; padding-block: 18px; border-top: 1px solid var(--line); color: var(--pearl-3); }
@@ -230,7 +267,10 @@ button { font: inherit; color: inherit; }
 /* ---------- Marquee ---------- */
 .marquee { overflow: hidden; border-bottom: 1px solid var(--line); padding-block: 22px; }
 .mq-track { display: flex; width: max-content; animation: marquee 48s linear infinite; }
+.mq-track.js { animation: none; }
 .marquee:hover .mq-track { animation-play-state: paused; }
+.mq-set span { transition: color .4s ease; }
+.mq-set span:hover { font-style: italic; background-image: var(--foil); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; animation: foil 9s linear infinite; }
 .mq-set { display: flex; align-items: center; }
 .mq-set span { font: italic 400 clamp(1.8rem, 3.6vw, 3.2rem)/1 var(--serif); padding-inline: 28px; white-space: nowrap; color: var(--pearl); }
 .mq-set i { font-style: normal; color: var(--gold); font-size: 1rem; }
@@ -259,15 +299,26 @@ button { font: inherit; color: inherit; }
   background: none; color: var(--pearl-2); cursor: pointer;
   transition: color .3s, border-color .3s, background .3s;
 }
-.chip span { color: var(--pearl-3); letter-spacing: 0; }
-.chip:hover { color: var(--pearl); border-color: var(--pearl-3); }
+.chip span { color: var(--pearl-3); letter-spacing: 0; transition: color .3s; }
+/* Liquid gold: a disc of foil grows from the point where the pointer came in, and shrinks to where it left. */
+.chip, .pd-close { position: relative; overflow: hidden; isolation: isolate; }
+.chip::before, .pd-close::before {
+  content: ""; position: absolute; z-index: -1; left: var(--fx, 50%); top: var(--fy, 50%); width: 260%; aspect-ratio: 1;
+  border-radius: 50%; translate: -50% -50%; scale: 0; pointer-events: none;
+  background: var(--foil); background-size: 200% 100%; transition: scale .75s var(--ease);
+}
+.chip:hover::before, .pd-close:hover::before { scale: 1; }
+.chip:hover, .pd-close:hover { color: #1d150a; border-color: transparent; }
+.chip:hover span { color: #4a3816; }
 .chip[aria-pressed="true"] { color: #1d150a; background: var(--foil); background-size: 200% 100%; border-color: transparent; }
 .chip[aria-pressed="true"] span { color: #4a3816; }
 .count { color: var(--pearl-3); }
 
 .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 72px clamp(28px, 4.5vw, 80px); }
 .grid .card:nth-child(even) { margin-top: clamp(70px, 10vw, 170px); }
-.card { display: block; color: inherit; text-decoration: none; }
+/* Scroll speed bends the cards (--skew) and lets the right column trail behind (--lag). */
+.card { display: block; color: inherit; text-decoration: none; transform: skewY(var(--skew, 0deg)); }
+.grid .card:nth-child(even) { translate: 0 var(--lag, 0px); }
 .card .frame {
   position: relative; display: block; aspect-ratio: 3 / 2; overflow: hidden; border-radius: 4px; background: var(--noir-3);
   transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
@@ -276,8 +327,18 @@ button { font: inherit; color: inherit; }
 .card:hover .frame { box-shadow: 0 40px 80px rgba(0, 0, 0, .5); }
 .card .frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity .9s ease, transform 1.6s var(--ease); }
 .card .frame img.alt { opacity: 0; }
-.card:hover .frame img { transform: scale(1.06); }
+.card:hover .frame img:not(.alt) { transform: scale(1.06); }
 .card:hover .frame img.alt, .card:focus-visible .frame img.alt { opacity: 1; }
+/* With a mouse, the second image shows through a soft lens that follows the cursor. */
+@property --lr { syntax: "<length>"; inherits: true; initial-value: 0px; }
+html.has-cursor .card .frame img.alt {
+  opacity: 1;
+  -webkit-mask-image: radial-gradient(circle at var(--gx, 50%) var(--gy, 50%), #000 calc(var(--lr) - 40px), transparent var(--lr));
+  mask-image: radial-gradient(circle at var(--gx, 50%) var(--gy, 50%), #000 calc(var(--lr) - 40px), transparent var(--lr));
+  transition: --lr 1s var(--ease);
+}
+html.has-cursor .card:hover .frame img.alt { --lr: 200px; }
+html.has-cursor .card:focus-visible .frame img.alt { --lr: 2000px; }
 .card .glare {
   position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .5s ease;
   background: radial-gradient(circle at var(--gx, 50%) var(--gy, 50%), rgba(255, 238, 200, .32), transparent 48%);
@@ -305,7 +366,14 @@ button { font: inherit; color: inherit; }
   width: 100%; display: grid; grid-template-columns: 3rem minmax(0, 1fr) auto 28px; align-items: center; gap: 18px;
   padding: 24px 0; border: 0; border-bottom: 1px solid var(--line); background: none; text-align: left; cursor: pointer;
   transition: padding .6s var(--ease);
+  position: relative; isolation: isolate;
 }
+.disc-list button::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(90deg, rgba(214, 180, 110, .13), rgba(214, 180, 110, .02) 70%, transparent);
+  transform: scaleY(0); transform-origin: 50% var(--fo, 0%); transition: transform .6s var(--ease);
+}
+.disc-list button:hover::before { transform: scaleY(1); }
 .disc-list button:hover { padding-left: 20px; }
 .disc-list .dn { font: 500 .7rem/1 var(--mono); color: var(--gold); letter-spacing: .1em; }
 .disc-list .dt { font: 400 clamp(1.7rem, 3.3vw, 3rem)/1.05 var(--serif); letter-spacing: -.01em; }
@@ -367,7 +435,7 @@ button { font: inherit; color: inherit; }
   font: 500 .8rem/1 var(--mono); letter-spacing: .2em; text-transform: uppercase;
   box-shadow: 0 20px 50px rgba(214, 180, 110, .22), inset 0 1px 0 rgba(255, 255, 255, .6);
   animation: foil 9s linear infinite;
-  transition: transform .7s var(--ease), box-shadow .5s ease;
+  transition: transform var(--mt), box-shadow .5s ease;
 }
 .hire:hover { box-shadow: 0 26px 70px rgba(214, 180, 110, .38), inset 0 1px 0 rgba(255, 255, 255, .6); }
 .hire svg { width: 16px; height: 16px; }
@@ -377,7 +445,12 @@ button { font: inherit; color: inherit; }
 .foot a { text-decoration: none; }
 .foot a:hover { color: var(--gold); }
 
-[data-magnetic] { transition: transform .7s var(--ease); }
+/* Project images that trail the mouse across the contact section */
+.trail-img {
+  position: absolute; z-index: -1; width: clamp(150px, 15vw, 240px); aspect-ratio: 3 / 2; object-fit: cover;
+  border-radius: 4px; pointer-events: none; translate: -50% -50%;
+  box-shadow: 0 26px 60px rgba(0, 0, 0, .55), 0 0 0 1px rgba(214, 180, 110, .4);
+}
 
 /* ---------- Project viewer ---------- */
 .pdlg { padding: 0; margin: 0; border: 0; width: 100%; height: 100%; max-width: 100%; max-height: 100%; background: transparent; color: var(--pearl); overflow-y: auto; overscroll-behavior: contain; }
@@ -393,8 +466,7 @@ button { font: inherit; color: inherit; }
   background: linear-gradient(rgba(11, 10, 9, .94), rgba(11, 10, 9, .7) 70%, rgba(11, 10, 9, 0));
   color: var(--pearl-2);
 }
-.pd-close { display: inline-flex; align-items: center; gap: 12px; padding: 12px 18px; border: 1px solid var(--line-2); border-radius: 999px; background: rgba(11, 10, 9, .6); cursor: pointer; font: 500 .68rem/1 var(--mono); letter-spacing: .18em; text-transform: uppercase; }
-.pd-close:hover { border-color: var(--gold); color: var(--gold); }
+.pd-close { display: inline-flex; align-items: center; gap: 12px; padding: 12px 18px; border: 1px solid var(--line-2); border-radius: 999px; background: rgba(11, 10, 9, .6); cursor: pointer; font: 500 .68rem/1 var(--mono); letter-spacing: .18em; text-transform: uppercase; transition: color .3s, border-color .3s, transform var(--mt); }
 .pd-body { max-width: var(--max); margin-inline: auto; padding: 0 var(--gutter) 90px; }
 .pd-body.swap { animation: fadeup .9s var(--ease) both; }
 .pd-intro { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 36px 80px; align-items: end; padding: 7vh 0 64px; }
@@ -557,7 +629,7 @@ button { font: inherit; color: inherit; }
 .folio::before { content: "— "; }
 .folio::after { content: " —"; }
 
-.c-btn { width: 50px; height: 50px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; border: 1px solid rgba(233, 205, 140, .45); background: rgba(11, 10, 9, .55); color: var(--pearl); transition: border-color .3s, color .3s, opacity .3s; }
+.c-btn { width: 50px; height: 50px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; border: 1px solid rgba(233, 205, 140, .45); background: rgba(11, 10, 9, .55); color: var(--pearl); transition: border-color .3s, color .3s, opacity .3s, transform var(--mt); }
 .c-btn:hover:not(:disabled) { border-color: var(--gold); color: var(--gold); }
 .c-btn:disabled { opacity: .28; cursor: default; }
 .c-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; }
@@ -568,7 +640,8 @@ button { font: inherit; color: inherit; }
 .c-dots i.on { width: 24px; background: var(--gold); }
 .c-hint { position: absolute; top: calc(34px + env(safe-area-inset-top, 0px)); left: 50%; translate: -50% 0; width: max-content; max-width: calc(100% - 150px); margin: 0; text-align: center; color: var(--pearl-2); opacity: 0; transition: opacity .6s ease; z-index: 4; }
 .cdlg.on .c-hint.show { opacity: .85; }
-.cdlg .c-close, .cdlg .c-nav { opacity: 0; transition: opacity .5s ease .9s; }
+.cdlg .c-nav { opacity: 0; transition: opacity .5s ease .9s; }
+.cdlg .c-close { opacity: 0; transition: opacity .5s ease .9s, border-color .3s, color .3s, transform var(--mt); }
 .cdlg.on .c-close, .cdlg.on .c-nav { opacity: 1; }
 
 /* ---------- Cursor and gold dust ---------- */
@@ -578,18 +651,20 @@ button { font: inherit; color: inherit; }
 html.cursor-on .c-dot, html.cursor-on .c-ring { opacity: 1; }
 .c-dot { width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%; background: var(--gold-hi); box-shadow: 0 0 12px rgba(243, 220, 162, .9); }
 .c-ring { width: 0; height: 0; }
-.c-ring::before {
+/* .c-blob stretches along the direction of travel; its ::before carries the hover states. */
+.c-blob { position: absolute; left: 0; top: 0; width: 0; height: 0; }
+.c-blob::before {
   content: ""; position: absolute; left: -20px; top: -20px; width: 40px; height: 40px; border-radius: 50%;
   border: 1px solid rgba(214, 180, 110, .75);
   transition: transform .5s var(--ease), background .4s ease, border-color .4s ease;
 }
 .c-ring span { position: absolute; left: 0; top: 0; translate: -50% -50%; font: 500 .62rem/1 var(--mono); letter-spacing: .2em; text-transform: uppercase; color: #1d150a; white-space: nowrap; opacity: 0; transition: opacity .3s ease; }
-html.cursor-hover .c-ring::before { transform: scale(1.55); background: rgba(214, 180, 110, .08); }
-html.cursor-label .c-ring::before { transform: scale(2.3); background: var(--foil); background-size: 200% 100%; border-color: transparent; }
+html.cursor-hover .c-blob::before { transform: scale(1.55); background: rgba(214, 180, 110, .08); }
+html.cursor-label .c-blob::before { transform: scale(2.3); background: var(--foil); background-size: 200% 100%; border-color: transparent; }
 html.cursor-label .c-ring span { opacity: 1; }
 html.cursor-label .c-dot { opacity: 0; }
-html.cursor-down .c-ring::before { transform: scale(.75); }
-html.cursor-label.cursor-down .c-ring::before { transform: scale(2); }
+html.cursor-down .c-blob::before { transform: scale(.75); }
+html.cursor-label.cursor-down .c-blob::before { transform: scale(2); }
 html.has-cursor, html.has-cursor * { cursor: none !important; }
 
 /* ---------- Responsive ---------- */
@@ -602,8 +677,9 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
 }
 @media (max-width: 760px) {
   :root { --bar: 64px; }
+  .bar .fxbtn { display: none; }
   .grid { grid-template-columns: minmax(0, 1fr); gap: 64px; }
-  .grid .card:nth-child(even) { margin-top: 0; }
+  .grid .card:nth-child(even) { margin-top: 0; translate: none; }
   .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .disc-list button { grid-template-columns: 2.2rem 64px minmax(0, 1fr) 22px; gap: 14px; padding: 18px 0; }
   .disc-list .dthumb { display: block; width: 64px; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 3px; }
@@ -619,14 +695,19 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
   .c-btn { width: 44px; height: 44px; }
   .c-nav { gap: 12px; }
 }
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; transition-delay: 0s !important; }
-}
+/* Calm mode: the visitor's system asks for less motion, or they switched FX off.
+   Intro, drifting, scrolling and flying motion stop. Hover, cursor and click feedback stay,
+   and so does the gold shimmer, which changes colour rather than position. */
+html.calm { scroll-behavior: auto; }
+html.calm .h1 .ln > span, html.calm .intro, html.calm .hero-cta, html.calm .float-in, html.calm .float img,
+html.calm .mq-track, html.calm .mini-float, html.calm .mini-shadow, html.calm .b-hover, html.calm .b-shadow,
+html.calm .scrollcue i::after, html.calm .pdlg .pd-in, html.calm .pd-intro > *, html.calm .pd-body.swap,
+html.calm [data-reveal], html.calm .card .frame img:first-child { animation: none !important; }
 </style>
 </head>
 <body>
 <div class="grain" aria-hidden="true"></div>
+<div class="glow" aria-hidden="true"></div>
 <a class="skip" href="#work" data-i18n="skip">Skip to the work</a>
 
 <header class="bar" id="bar">
@@ -643,6 +724,7 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
       <button type="button" data-lang="pt" aria-pressed="false">PT</button>
       <button type="button" data-lang="es" aria-pressed="false">ES</button>
     </div>
+    <button type="button" class="fxbtn" data-motion data-magnetic aria-pressed="true"><i aria-hidden="true">✦</i><span aria-hidden="true">FX</span></button>
     <button type="button" class="cbtn sm" data-career data-magnetic data-cursor="open">
       <span class="cbtn-ring" aria-hidden="true"></span>
       <span class="cbtn-face">
@@ -671,7 +753,7 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
               <span class="cbtn-text"><span class="cbtn-label" data-i18n="btn.career">My Career</span><span class="cbtn-sub" data-i18n="btn.careerSub">Open the book</span></span>
             </span>
           </button>
-          <a class="explore" href="#work"><span data-i18n="hero.explore">Explore selected work</span><span class="mono" data-i18n="hero.count">20 projects</span></a>
+          <a class="explore" href="#work" data-magnetic><span data-i18n="hero.explore">Explore selected work</span><span class="mono" data-i18n="hero.count">20 projects</span></a>
         </div>
         <p class="hero-sign mono" data-i18n="hero.sign">Portfolio of Nayara J. N. · Brazil</p>
       </div>
@@ -775,6 +857,7 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
   <div class="wrap mono">
     <a class="wordmark" href="#top">Nayara <em class="foil">J. N.</em></a>
     <span data-i18n="foot.note">Concept portfolio · Brands shown are fictional</span>
+    <button type="button" class="fxlink" data-motion aria-pressed="true"><i aria-hidden="true">✦</i> <span></span> <b aria-hidden="true"></b></button>
     <a href="#top" data-i18n="foot.top">Back to top</a>
   </div>
 </footer>
@@ -783,7 +866,7 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
 
 <dialog class="pdlg" id="project" aria-labelledby="pd-title">
   <div class="pd-in">
-    <div class="pd-bar mono"><span id="pd-kicker"></span><button type="button" class="pd-close" id="pd-close" data-cursor="close"><span id="pd-close-label">Close</span> <span aria-hidden="true">×</span></button></div>
+    <div class="pd-bar mono"><span id="pd-kicker"></span><button type="button" class="pd-close" id="pd-close" data-cursor="close" data-magnetic><span id="pd-close-label">Close</span> <span aria-hidden="true">×</span></button></div>
     <div class="pd-body" id="pd-body"></div>
   </div>
 </dialog>
@@ -797,15 +880,15 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
     </div>
   </div>
   <p class="c-hint mono" id="c-hint"></p>
-  <button type="button" class="c-btn c-close" id="c-close" data-cursor="close"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 3.5 9 9m0-9-9 9"/></svg></button>
+  <button type="button" class="c-btn c-close" id="c-close" data-cursor="close" data-magnetic><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 3.5 9 9m0-9-9 9"/></svg></button>
   <div class="c-nav">
-    <button type="button" class="c-btn" id="c-prev"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg></button>
+    <button type="button" class="c-btn" id="c-prev" data-magnetic><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg></button>
     <div class="c-dots" id="c-dots" aria-hidden="true"></div>
-    <button type="button" class="c-btn" id="c-next"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg></button>
+    <button type="button" class="c-btn" id="c-next" data-magnetic><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg></button>
   </div>
 </dialog>
 
-<div class="fx" id="fx" aria-hidden="true"><canvas id="fx-canvas"></canvas><div class="c-ring"><span></span></div><div class="c-dot"></div></div>
+<div class="fx" id="fx" aria-hidden="true"><canvas id="fx-canvas"></canvas><div class="c-ring"><i class="c-blob"></i><span></span></div><div class="c-dot"></div></div>
 
 <script src="content.js"></script>
 <script>
@@ -820,7 +903,9 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
     set(k, v) { try { localStorage.setItem(k, v); } catch {} },
   };
   const html = document.documentElement;
-  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // calm = less motion (system setting or the visitor's FX switch). Pointer effects run either way;
+  // only the autoplay, scroll and flying motion depends on it.
+  let calm = html.classList.contains("calm");
   const fine = matchMedia("(hover: hover) and (pointer: fine)").matches;
   const sleep = ms => new Promise(r => setTimeout(r, ms));
   const pad = n => String(n).padStart(2, "0");
@@ -834,7 +919,7 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
   const FX = (() => {
     const layer = $("#fx"), cv = $("#fx-canvas"), ctx = cv.getContext("2d");
     const C = ["255,238,196", "238,205,140", "214,176,100", "255,250,232", "196,150,78"];
-    const P = [], R = [];
+    const P = [], R = [], F = [];
     let W = 0, H = 0, raf = 0;
     const rnd = (a, b) => a + Math.random() * (b - a);
     const col = () => C[(Math.random() * C.length) | 0];
@@ -851,11 +936,27 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
     function tick() {
       ctx.clearRect(0, 0, W, H);
       ctx.globalCompositeOperation = "lighter";
+      for (let i = F.length - 1; i >= 0; i--) {
+        const f = F[i];
+        f.r += (f.to - f.r) * .16; f.life -= .045;
+        if (f.life <= 0) { F.splice(i, 1); continue; }
+        const g = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.r);
+        g.addColorStop(0, `rgba(255,238,196,${f.life * .32})`);
+        g.addColorStop(.45, `rgba(214,176,100,${f.life * .12})`);
+        g.addColorStop(1, "rgba(214,176,100,0)");
+        ctx.fillStyle = g;
+        ctx.fillRect(f.x - f.r, f.y - f.r, f.r * 2, f.r * 2);
+      }
       for (let i = P.length - 1; i >= 0; i--) {
         const p = P[i];
         p.vx *= p.drag; p.vy = p.vy * p.drag + p.g; p.x += p.vx; p.y += p.vy; p.life -= p.decay;
         if (p.life <= 0) { P.splice(i, 1); continue; }
         const a = p.life;
+        if (p.streak) {
+          ctx.strokeStyle = `rgba(${p.c},${a})`; ctx.lineWidth = p.s * .9; ctx.lineCap = "round";
+          ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p.x - p.vx * 3.2, p.y - p.vy * 3.2); ctx.stroke();
+          continue;
+        }
         ctx.fillStyle = `rgba(${p.c},${a * .16})`;
         ctx.beginPath(); ctx.arc(p.x, p.y, p.s * 3.4, 0, 6.2832); ctx.fill();
         ctx.fillStyle = `rgba(${p.c},${a})`;
@@ -874,7 +975,7 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
         ctx.beginPath(); ctx.arc(r.x, r.y, r.r, 0, 6.2832); ctx.stroke();
       }
       ctx.globalCompositeOperation = "source-over";
-      raf = P.length || R.length ? requestAnimationFrame(tick) : 0;
+      raf = P.length || R.length || F.length ? requestAnimationFrame(tick) : 0;
       if (!raf) ctx.clearRect(0, 0, W, H);
     }
     return {
@@ -887,6 +988,11 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
           const a = Math.random() * Math.PI * 2, sp = rnd(1.2, 4.4) * power;
           add({ x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - .6, g: .07, drag: .94, life: 1, decay: rnd(.012, .024), s: rnd(.7, 2), c: col(), star: Math.random() < .3 });
         }
+        for (let i = 0; i < 8; i++) {
+          const a = i / 8 * Math.PI * 2 + rnd(-.2, .2), sp = rnd(5, 8) * power;
+          add({ x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, g: 0, drag: .88, life: 1, decay: rnd(.05, .07), s: rnd(1, 1.6), c: col(), streak: true });
+        }
+        F.push({ x, y, r: 8, to: 120 * power, life: 1 });
         R.push({ x, y, r: 2, to: 44 * power, life: 1, w: 1.3 }, { x, y, r: 2, to: 80 * power, life: .7, w: .7 });
         kick();
       },
@@ -896,20 +1002,25 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
     };
   })();
 
-  if (fine && !reduce) {
+  if (fine) {
     html.classList.add("has-cursor");
-    const dot = $(".c-dot"), ring = $(".c-ring"), label = $(".c-ring span");
-    let mx = -100, my = -100, rx = -100, ry = -100, lx = 0, ly = 0, acc = 0, loopId = 0, shown = false;
+    const dot = $(".c-dot"), ring = $(".c-ring"), blob = $(".c-blob"), label = $(".c-ring span"), glow = $(".glow");
+    let mx = -100, my = -100, rx = -100, ry = -100, gx = -100, gy = -100, lx = 0, ly = 0, acc = 0, loopId = 0, shown = false;
+    // The ring trails the pointer and stretches along its path like a drop of liquid gold; the glow follows more lazily.
     const loop = () => {
-      rx += (mx - rx) * .18; ry += (my - ry) * .18;
-      ring.style.transform = `translate3d(${rx}px,${ry}px,0)`;
-      loopId = Math.abs(mx - rx) + Math.abs(my - ry) > .1 ? requestAnimationFrame(loop) : 0;
+      const dx = mx - rx, dy = my - ry;
+      rx += dx * .16; ry += dy * .16; gx += (mx - gx) * .07; gy += (my - gy) * .07;
+      const v = Math.min(Math.hypot(dx, dy) / 130, .6);
+      ring.style.transform = `translate3d(${rx.toFixed(1)}px,${ry.toFixed(1)}px,0)`;
+      blob.style.transform = `rotate(${Math.atan2(dy, dx).toFixed(3)}rad) scale(${(1 + v).toFixed(3)},${(1 - v * .5).toFixed(3)})`;
+      glow.style.transform = `translate3d(${gx.toFixed(1)}px,${gy.toFixed(1)}px,0)`;
+      loopId = Math.abs(dx) + Math.abs(dy) + Math.abs(mx - gx) + Math.abs(my - gy) > .2 ? requestAnimationFrame(loop) : 0;
     };
     addEventListener("pointermove", e => {
       if (e.pointerType !== "mouse") return;
       mx = e.clientX; my = e.clientY;
       dot.style.transform = `translate3d(${mx}px,${my}px,0)`;
-      if (!shown) { shown = true; rx = lx = mx; ry = ly = my; html.classList.add("cursor-on"); }
+      if (!shown) { shown = true; rx = gx = lx = mx; ry = gy = ly = my; html.classList.add("cursor-on"); }
       const dx = mx - lx, dy = my - ly;
       acc += Math.hypot(dx, dy);
       let n = 0;
@@ -930,12 +1041,10 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
     addEventListener("pointerdown", () => html.classList.add("cursor-down"));
     addEventListener("pointerup", () => html.classList.remove("cursor-down"));
   }
-  if (!reduce) {
-    addEventListener("pointerdown", e => {
-      if (e.button > 0) return;
-      FX.burst(e.clientX, e.clientY, fine ? 22 : 16, 1);
-    }, { passive: true });
-  }
+  addEventListener("pointerdown", e => {
+    if (e.button > 0) return;
+    FX.burst(e.clientX, e.clientY, fine ? 26 : 18, 1);
+  }, { passive: true });
 
   /* ================= Language ================= */
   const EN = {};
@@ -982,6 +1091,8 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
     renderDisciplines();
     renderMarquee();
     $("#mini-cover").innerHTML = coverHTML(B());
+    splitHero();
+    motionUI();
     if (pd.open) renderProject(cur);
     if (cd.open) { buildBook(); applyState(true); }
     if (save) store.set("lang", lang);
@@ -1014,7 +1125,7 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
         <h3>${esc(p.name)} <em>${esc(L(p.sub))}</em></h3>
       </a>`).join("");
     $("#count").textContent = plural(items.length);
-    if (fine && !reduce) $$(".card", grid).forEach(bindTilt);
+    if (fine) $$(".card", grid).forEach(bindTilt);
   }
 
   function bindTilt(card) {
@@ -1044,9 +1155,10 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
   function renderMarquee() {
     const items = S.disciplines.map(d => `<span>${esc(L(d.t))}</span><i>✦</i>`).join("");
     $("#marquee").innerHTML = `<div class="mq-track"><div class="mq-set">${items}</div><div class="mq-set">${items}</div></div>`;
+    mqW = 0;
   }
 
-  if (fine && !reduce) {
+  if (fine) {
     const pv = $("#disc-preview"), pimg = $("img", pv), list = $("#disc-list");
     let px = 0, py = 0, tx = 0, ty = 0, run = 0, on = false;
     const step = () => {
@@ -1069,7 +1181,7 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
   }
 
   /* ================= Hero: parallax + spotlight; magnetic buttons ================= */
-  if (fine && !reduce) {
+  if (fine) {
     const hero = $("#hero"), floats = $$(".float", hero);
     let tx = 0, ty = 0, cx = 0, cy = 0, sx = 72, sy = 34, tsx = 72, tsy = 34, run = 0;
     const step = () => {
@@ -1091,15 +1203,195 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
       tsy = (e.clientY - r.top) / r.height * 100;
       if (!run) run = requestAnimationFrame(step);
     });
+    // Buttons lean toward the cursor, then spring back past their rest point when it leaves.
     $$("[data-magnetic]").forEach(el => {
+      const pull = el.classList.contains("cbtn") || el.classList.contains("hire") ? .3 : .42;
       el.addEventListener("pointermove", e => {
+        if (e.pointerType !== "mouse") return;
         const r = el.getBoundingClientRect();
         const x = e.clientX - r.left - r.width / 2, y = e.clientY - r.top - r.height / 2;
-        el.style.transform = `translate3d(${x * .2}px, ${y * .3}px, 0)`;
+        el.classList.remove("spring");
+        el.style.transform = `translate3d(${(x * pull).toFixed(1)}px, ${(y * pull * 1.3).toFixed(1)}px, 0)`;
       });
-      el.addEventListener("pointerleave", () => { el.style.transform = ""; });
+      el.addEventListener("pointerleave", () => { el.classList.add("spring"); el.style.transform = ""; });
     });
   }
+
+  /* ================= Hero headline: letters lean away from the cursor and catch the light ================= */
+  const h1 = $("#hero-title");
+  let glyphs = [];
+  function splitHero() {
+    h1.classList.remove("ready");
+    h1.setAttribute("aria-label", h1.textContent.replace(/\s+/g, " ").trim());
+    $$(".ln > span", h1).forEach(line => {
+      [...line.childNodes].forEach(n => {
+        if (n.nodeType === 1) { n.classList.add("ch"); n.setAttribute("aria-hidden", "true"); return; }
+        if (n.nodeType !== 3) return;
+        const frag = document.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach(part => {
+          if (!part) return;
+          if (!part.trim()) { frag.append(part); return; }
+          const w = document.createElement("span");
+          w.className = "w";
+          w.setAttribute("aria-hidden", "true");
+          for (const c of part) { const s = document.createElement("span"); s.className = "ch"; s.textContent = c; w.append(s); }
+          frag.append(w);
+        });
+        n.replaceWith(frag);
+      });
+    });
+    glyphs = $$(".ch", h1).map(el => ({ el, x: 0, y: 0, vx: 0, vy: 0, h: 0, cx: 0, cy: 0 }));
+    clearTimeout(splitHero.t);
+    splitHero.t = setTimeout(() => { h1.classList.add("ready"); measureGlyphs(); }, calm ? 30 : 1500);
+  }
+  function measureGlyphs() {
+    const hr = h1.getBoundingClientRect();
+    glyphs.forEach(g => {
+      const r = g.el.getBoundingClientRect();
+      g.cx = r.left + r.width / 2 - g.x - hr.left;
+      g.cy = r.top + r.height / 2 - g.y - hr.top;
+    });
+  }
+  if (fine) {
+    const hero = $("#hero"), RADIUS = 200;
+    let px = -1e4, py = -1e4, run = 0;
+    const step = () => {
+      const hr = h1.getBoundingClientRect();
+      let busy = false;
+      for (const g of glyphs) {
+        const dx = g.cx + hr.left - px, dy = g.cy + hr.top - py, d = Math.hypot(dx, dy) || 1;
+        const f = d < RADIUS ? (1 - d / RADIUS) ** 2 : 0;
+        const tx = dx / d * f * 42, ty = dy / d * f * 34;
+        // A damped spring: the letters overshoot and wobble back, which reads as elastic.
+        g.vx = (g.vx + (tx - g.x) * .13) * .8; g.vy = (g.vy + (ty - g.y) * .13) * .8;
+        g.x += g.vx; g.y += g.vy; g.h += (f * 1.6 - g.h) * .18;
+        const h = Math.min(1, g.h);
+        g.el.style.transform = `translate3d(${g.x.toFixed(2)}px,${g.y.toFixed(2)}px,0) rotate(${(g.x * .3).toFixed(2)}deg)`;
+        g.el.style.setProperty("--h", h.toFixed(3));
+        if (Math.abs(g.vx) + Math.abs(g.vy) + Math.abs(tx - g.x) + Math.abs(ty - g.y) + Math.abs(f * 1.6 - g.h) > .02) busy = true;
+      }
+      run = busy ? requestAnimationFrame(step) : 0;
+    };
+    hero.addEventListener("pointermove", e => {
+      if (e.pointerType !== "mouse" || !h1.classList.contains("ready")) return;
+      px = e.clientX; py = e.clientY;
+      if (!run) run = requestAnimationFrame(step);
+    });
+    hero.addEventListener("pointerleave", () => { px = py = -1e4; if (!run) run = requestAnimationFrame(step); });
+    let rt = 0;
+    addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { if (h1.classList.contains("ready")) measureGlyphs(); }, 150); });
+  }
+
+  /* ================= Liquid fills: the gold grows from where the pointer came in ================= */
+  const FILL = ".chip, .pd-close, .disc-list button";
+  const entry = (e, el) => {
+    const r = el.getBoundingClientRect();
+    el.style.setProperty("--fx", `${(e.clientX - r.left).toFixed(0)}px`);
+    el.style.setProperty("--fy", `${(e.clientY - r.top).toFixed(0)}px`);
+    el.style.setProperty("--fo", e.clientY < r.top + r.height / 2 ? "0%" : "100%");
+  };
+  document.addEventListener("pointerover", e => { const el = e.target.closest(FILL); if (el && !el.contains(e.relatedTarget)) entry(e, el); });
+  document.addEventListener("pointerout", e => { const el = e.target.closest(FILL); if (el && !el.contains(e.relatedTarget)) entry(e, el); });
+
+  /* ================= Contact: project images trail the mouse ================= */
+  if (fine) {
+    const box = $("#contact"), pool = S.projects.map(p => `img/${p.slug}-1-sm.webp`);
+    let lx = null, ly = null, n = 0, live = 0, warm = false;
+    box.addEventListener("pointerenter", () => {
+      if (warm) return;
+      warm = true;
+      pool.forEach(src => { new Image().src = src; });
+    });
+    box.addEventListener("pointermove", e => {
+      if (e.pointerType !== "mouse") return;
+      const r = box.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+      if (lx === null) { lx = x; ly = y; return; }
+      if (Math.hypot(x - lx, y - ly) < 85 || live > 12) return;
+      lx = x; ly = y;
+      const img = document.createElement("img");
+      img.className = "trail-img"; img.alt = ""; img.decoding = "async";
+      img.src = pool[n++ % pool.length];
+      img.style.left = x + "px"; img.style.top = y + "px";
+      box.append(img);
+      live++;
+      const rot = (Math.random() - .5) * 18;
+      img.animate([
+        { opacity: 0, scale: .35, rotate: `${rot * 2}deg`, translate: "-50% -50%" },
+        { opacity: 1, scale: 1, rotate: `${rot}deg`, translate: "-50% -50%", offset: .2 },
+        { opacity: 1, scale: 1, rotate: `${rot}deg`, translate: "-50% -50%", offset: .5 },
+        { opacity: 0, scale: .8, rotate: `${rot * .4}deg`, translate: "-50% -10%" },
+      ], { duration: 1500, easing: "cubic-bezier(.22, 1, .36, 1)", fill: "both" })
+        .finished.catch(() => {}).then(() => { img.remove(); live--; });
+    });
+    box.addEventListener("pointerleave", () => { lx = ly = null; });
+  }
+
+  /* ================= Flow: scroll speed bends the cards and drives the marquee ================= */
+  const mq = $("#marquee");
+  let flowId = 0, lastY = scrollY, lastT = 0, vel = 0, mqX = 0, mqW = 0, mqDir = 1, mqGo = 1, mqSeen = false, mqHover = false;
+  new IntersectionObserver(([en]) => { mqSeen = en.isIntersecting; if (mqSeen) kickFlow(); }).observe(mq);
+  mq.addEventListener("pointerenter", () => { mqHover = true; });
+  mq.addEventListener("pointerleave", () => { mqHover = false; });
+  addEventListener("resize", () => { mqW = 0; });
+  function flow(t) {
+    const dt = lastT ? Math.min(3, (t - lastT) / 16.67) : 1;
+    lastT = t;
+    const y = scrollY, raw = (y - lastY) / dt;
+    lastY = y;
+    vel += (raw - vel) * .12;
+    if (Math.abs(raw) > .4) mqDir = raw > 0 ? 1 : -1;
+    const v = Math.abs(vel) < .02 ? 0 : vel;
+    grid.style.setProperty("--skew", `${Math.max(-4, Math.min(4, v * .09)).toFixed(3)}deg`);
+    grid.style.setProperty("--lag", `${Math.max(-56, Math.min(56, v * 1.3)).toFixed(1)}px`);
+    const track = mq.firstElementChild;
+    if (mqSeen && track) {
+      track.classList.add("js");
+      if (!mqW) mqW = track.firstElementChild.offsetWidth;
+      mqGo += ((mqHover ? 0 : 1) - mqGo) * .06;
+      mqX -= (.7 + Math.min(Math.abs(vel) * .4, 16)) * mqDir * mqGo * dt;
+      mqX %= mqW;
+      if (mqX > 0) mqX -= mqW;
+      track.style.transform = `translate3d(${mqX.toFixed(2)}px,0,0)`;
+    }
+    flowId = !calm && (mqSeen || v) ? requestAnimationFrame(flow) : 0;
+    if (!flowId) lastT = 0;
+  }
+  function kickFlow() { if (!calm && !flowId) flowId = requestAnimationFrame(flow); }
+  addEventListener("scroll", kickFlow, { passive: true });
+
+  /* ================= FX switch ================= */
+  function motionUI() {
+    $$("[data-motion]").forEach(b => {
+      b.setAttribute("aria-pressed", String(!calm));
+      b.title = ui("motion");
+    });
+    $(".fxbtn").setAttribute("aria-label", ui("motion"));
+    $(".fxlink span").textContent = ui("motion");
+    $(".fxlink b").textContent = calm ? ui("off") : ui("on");
+  }
+  function setMotion(nextCalm, save) {
+    calm = nextCalm;
+    html.classList.toggle("calm", calm);
+    if (save) store.set("motion", calm ? "calm" : "full");
+    motionUI();
+    if (calm) {
+      cancelAnimationFrame(flowId); flowId = 0; lastT = 0;
+      grid.style.removeProperty("--skew"); grid.style.removeProperty("--lag");
+      const track = mq.firstElementChild;
+      if (track) { track.classList.remove("js"); track.style.transform = ""; }
+      stopAmbient();
+    } else {
+      kickFlow();
+      if (cd.open && !ambient) startAmbient();
+    }
+  }
+  $$("[data-motion]").forEach(b => b.addEventListener("click", () => {
+    setMotion(!calm, true);
+    if (!calm) { const r = b.getBoundingClientRect(); FX.burst(r.left + r.width / 2, r.top + r.height / 2, 40, 1.5); }
+  }));
+  matchMedia("(prefers-reduced-motion: reduce)").addEventListener?.("change", e => {
+    if (!store.get("motion")) setMotion(e.matches, false);
+  });
 
   const bar = $("#bar");
   const onScroll = () => bar.classList.toggle("scrolled", scrollY > 30);
@@ -1178,7 +1470,7 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
 
   async function closeProject() {
     if (!pd.open || pd.classList.contains("closing")) return;
-    if (!reduce) { pd.classList.add("closing"); await sleep(540); }
+    if (!calm) { pd.classList.add("closing"); await sleep(540); }
     pd.classList.remove("closing");
     pd.close();
   }
@@ -1277,17 +1569,15 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
     lf.classList.add("turning");
     lf.classList.toggle("flipped", fwd);
     setPos();
-    if (!reduce) {
-      const r = lf.getBoundingClientRect();
-      for (let n = 0; n < 7; n++) FX.mote(fwd ? r.right : r.left, r.top + Math.random() * r.height);
-    }
+    const r = lf.getBoundingClientRect();
+    for (let n = 0; n < 7; n++) FX.mote(fwd ? r.right : r.left, r.top + Math.random() * r.height);
     clearTimeout(lf._t);
     lf._t = setTimeout(() => { lf.classList.remove("turning"); lf.style.zIndex = zFor(i); }, 1200);
     if (!hinted && k > 1) { hinted = true; $("#c-hint").classList.remove("show"); }
   }
 
   function startAmbient() {
-    if (reduce) return;
+    if (calm) return;
     stopAmbient();
     ambient = setInterval(() => {
       const r = book.getBoundingClientRect(), side = Math.random();
@@ -1308,7 +1598,14 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
     dialogOpened(cd);
     requestAnimationFrame(() => cd.classList.add("on"));
     if (!hinted) $("#c-hint").classList.add("show");
-    if (reduce) { k = 1; applyState(true); return; }
+    if (calm) {
+      // Calm: no flight across the screen, but the book still fades in and its cover still turns.
+      flyFrom = "scale(.94)";
+      fly.animate([{ transform: flyFrom, opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 450, easing: "cubic-bezier(.22, 1, .36, 1)" });
+      await sleep(400);
+      if (cd.open && k === 0 && !closingBook) go(1);
+      return;
+    }
     const r = (src || $("#career-hero")).getBoundingClientRect(), f = fly.getBoundingClientRect();
     const pw = parseFloat(stage.style.getPropertyValue("--pw"));
     const dx = r.left + r.width / 2 - (f.left + f.width / 2), dy = r.top + r.height / 2 - (f.top + f.height / 2);
@@ -1335,7 +1632,7 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
     if (!cd.open || closingBook) return;
     closingBook = true;
     stopAmbient();
-    if (!reduce) {
+    if (!calm) {
       if (k > 0) { book.classList.add("fast"); k = 0; applyState(false); await sleep(560); book.classList.remove("fast"); }
       cd.classList.remove("on");
       const a = fly.animate([{ transform: "none", opacity: 1 }, { transform: flyFrom || "scale(.5)", opacity: 0 }], { duration: 700, easing: "cubic-bezier(.55, 0, .75, .2)", fill: "forwards" });
@@ -1343,7 +1640,11 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
       cd.close();
       a.cancel();
     } else {
+      cd.classList.remove("on");
+      const a = fly.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300, fill: "forwards" });
+      await a.finished.catch(() => {});
       cd.close();
+      a.cancel();
     }
     closingBook = false;
   }
@@ -1368,7 +1669,7 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
   book.addEventListener("click", async e => {
     if (!e.target.closest("[data-seework]")) return;
     await closeCareer();
-    $("#work").scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
+    $("#work").scrollIntoView({ behavior: calm ? "auto" : "smooth" });
   });
   let sx = null;
   stage.addEventListener("pointerdown", e => { sx = e.clientX; });
@@ -1396,7 +1697,7 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
       filter = f.dataset.filter;
       renderFilters();
       renderGrid();
-      if (!f.classList.contains("chip")) $("#work").scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
+      if (!f.classList.contains("chip")) $("#work").scrollIntoView({ behavior: calm ? "auto" : "smooth" });
       return;
     }
     const o = e.target.closest("[data-open]");
