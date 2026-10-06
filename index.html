@@ -521,19 +521,40 @@ html.has-cursor .card:focus-visible .frame img.alt { --lr: 2000px; }
 .c-stage.single .b-fly { width: var(--pw); }
 .b-hover { width: 100%; height: 100%; transform-style: preserve-3d; animation: bookhover 7s ease-in-out infinite; }
 @keyframes bookhover { 0%, 100% { transform: translateY(0) rotateX(6deg) rotateZ(-.5deg); } 50% { transform: translateY(-14px) rotateX(4deg) rotateZ(.5deg); } }
+/* Phones: float without the 3D tilt (re-sorting the pages in depth every frame flickered in Safari),
+   and no live blur behind the book; the veil is nearly opaque there anyway. */
+@keyframes bookfloat { 0%, 100% { transform: translateY(0) rotate(-.4deg); } 50% { transform: translateY(-10px) rotate(.4deg); } }
+@media (hover: none) {
+  .b-hover { animation-name: bookfloat; }
+  .c-veil { backdrop-filter: none; -webkit-backdrop-filter: none; }
+}
 .b-shadow { position: absolute; left: 12%; right: 12%; bottom: calc(var(--ph) * -.13); height: calc(var(--ph) * .07); background: radial-gradient(closest-side, rgba(0, 0, 0, .7), transparent); filter: blur(8px); animation: bookshadow 7s ease-in-out infinite; }
 @keyframes bookshadow { 50% { transform: scale(.85); opacity: .65; } }
 .book { position: relative; width: 100%; height: 100%; perspective: 2600px; transition: transform .95s cubic-bezier(.65, .05, .36, 1); }
 .book[data-pos="closed"] { transform: translateX(calc(var(--pw) * -.5)); }
 .book[data-pos="end"] { transform: translateX(calc(var(--pw) * .5)); }
 .leaf { position: absolute; top: 0; left: var(--pw); width: var(--pw); height: 100%; transform-origin: left center; transform-style: preserve-3d; transition: transform 1.15s cubic-bezier(.645, .045, .355, 1); cursor: pointer; }
-.book.single .leaf { left: 0; transition: transform 1.15s cubic-bezier(.645, .045, .355, 1), opacity .4s ease; }
-.leaf.flipped { transform: rotateY(-180deg); }
-.book.single .leaf.flipped { opacity: 0; transition: transform 1.15s cubic-bezier(.645, .045, .355, 1), opacity .45s ease .62s; }
+.book.single .leaf { left: 0; }
+/* Safari stacks the leaves by depth, not z-index, so each leaf also sits a fraction of a pixel
+   above the one below it (--lz, set by the script); leaves more than one turn away are not drawn. */
+.leaf { transform: translateZ(var(--lz, 0px)); }
+.leaf.flipped { transform: translateZ(var(--lz, 0px)) rotateY(-180deg); }
+.leaf.off { display: none; }
 .book.fast .leaf { transition-duration: .5s; transition-delay: 0s; }
-.book.instant, .book.instant .leaf { transition: none !important; }
+.book.instant, .book.instant .leaf, .book.instant .face { transition: none !important; }
 .face { position: absolute; inset: 0; container-type: size; overflow: hidden; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 2px 6px 6px 2px; }
-.face.back { transform: rotateY(180deg); border-radius: 6px 2px 2px 6px; }
+.face.front { transform: translateZ(1px); }
+.face.back { transform: rotateY(180deg) translateZ(1px); border-radius: 6px 2px 2px 6px; }
+/* Don't trust backface-visibility alone: each side is hidden while it faces away, and the
+   sides swap halfway through the turn, when the page is edge-on. */
+.face { transition: visibility 0s linear .575s; }
+.face.back, .leaf.flipped .face.front { visibility: hidden; }
+.leaf.flipped .face.back { visibility: visible; }
+.book.fast .face { transition-delay: .25s; }
+/* One page at a time: a turned page fades out once it has turned. The fade sits on the faces,
+   because Safari ignores opacity on a 3D leaf. */
+.book.single .face { transition: visibility 0s linear .575s, opacity .3s ease; }
+.book.single .leaf.flipped .face { opacity: 0; transition: visibility 0s linear .575s, opacity .45s ease .62s; }
 .face::after { content: ""; position: absolute; inset: 0; z-index: 6; pointer-events: none; opacity: 0; background: linear-gradient(90deg, rgba(0, 0, 0, .38), rgba(0, 0, 0, 0) 65%); }
 .face.back::after { background: linear-gradient(270deg, rgba(0, 0, 0, .38), rgba(0, 0, 0, 0) 65%); }
 .leaf.turning .face::after { animation: turnshade 1.15s ease; }
@@ -1603,6 +1624,8 @@ html.calm [data-reveal], html.calm .card .frame img.main, html.calm .card.enter 
     book.className = `book ${mode}`;
     book.innerHTML = `<div class="block block-l"></div><div class="block block-r"></div>` +
       pairs.map(([fr, bk], i) => `<div class="leaf" data-i="${i}"><div class="face front">${fr}</div><div class="face back">${bk}</div></div>`).join("");
+    leaves.forEach(lf => clearTimeout(lf._t));
+    turning.clear();
     leaves = $$(".leaf", book);
     N = leaves.length;
     k = Math.min(k, maxK());
@@ -1626,9 +1649,22 @@ html.calm [data-reveal], html.calm .card .frame img.main, html.calm .card.enter 
 
   function zFor(i) { return i < k ? i + 1 : N - i; }
 
+  // Stacking order of the leaves: z-index for most browsers, plus a matching tiny translateZ
+  // for Safari, which sorts by depth. Only the leaves within one turn of k are drawn.
+  const turning = new Set();
+  function stack() {
+    leaves.forEach((lf, i) => {
+      const z = turning.has(i) ? 500 : zFor(i);
+      lf.style.zIndex = z;
+      lf.style.setProperty("--lz", `${(turning.has(i) ? N + 1 : z) * .5}px`);
+      lf.classList.toggle("off", !turning.has(i) && (i < k - 2 || i > k + 1));
+    });
+  }
+
   function applyState(instant) {
     if (instant) book.classList.add("instant");
-    leaves.forEach((lf, i) => { lf.classList.toggle("flipped", i < k); lf.style.zIndex = zFor(i); });
+    leaves.forEach((lf, i) => lf.classList.toggle("flipped", i < k));
+    stack();
     setPos();
     if (instant) { void book.offsetWidth; book.classList.remove("instant"); }
   }
@@ -1637,19 +1673,20 @@ html.calm [data-reveal], html.calm .card .frame img.main, html.calm .card.enter 
     if (nk < 0 || nk > maxK() || nk === k) return;
     const fwd = nk > k, i = fwd ? k : nk, lf = leaves[i];
     k = nk;
-    lf.style.zIndex = 500;
+    turning.add(i);
     lf.classList.add("turning");
     lf.classList.toggle("flipped", fwd);
+    stack();
     setPos();
     const r = lf.getBoundingClientRect();
     for (let n = 0; n < 7; n++) FX.mote(fwd ? r.right : r.left, r.top + Math.random() * r.height);
     clearTimeout(lf._t);
-    lf._t = setTimeout(() => { lf.classList.remove("turning"); lf.style.zIndex = zFor(i); }, 1200);
+    lf._t = setTimeout(() => { lf.classList.remove("turning"); turning.delete(i); stack(); }, 1200);
     if (!hinted && k > 1) { hinted = true; $("#c-hint").classList.remove("show"); }
   }
 
   function startAmbient() {
-    if (calm) return;
+    if (calm || !fine) return;
     stopAmbient();
     ambient = setInterval(() => {
       const r = book.getBoundingClientRect(), side = Math.random();
