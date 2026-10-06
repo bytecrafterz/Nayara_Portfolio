@@ -54,7 +54,7 @@ Live at **https://portfolio-self-two-17.vercel.app/**. Vercel publishes every pu
 - All projects are labelled as concept studies, and the footer says the brands are fictional.
 - Tool stacks are labelled "Suggested production stack", as on the ChatGPT site.
 - Career facts come from the public Workana profile on 6 Oct 2026:
-  - 5.0 rating, 3 projects delivered, 2 reviews
+  - 5.0 rating (the counts of projects delivered and reviews are left out on purpose)
   - Bronze level
   - English test 80%
   - years of experience as listed for each skill

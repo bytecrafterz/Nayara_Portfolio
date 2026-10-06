@@ -823,9 +823,9 @@ html.calm [data-reveal], html.calm .card .frame img:first-child { animation: non
         </button>
         <div class="stats">
           <div><b>5.0</b><span class="mono" data-i18n="car.s1">Workana rating</span></div>
-          <div><b>3</b><span class="mono" data-i18n="car.s2">Projects delivered</span></div>
+          <div><b>20</b><span class="mono" data-i18n="car.s2">Concept studies</span></div>
           <div><b>10+</b><span class="mono" data-i18n="car.s3">Years in Photoshop</span></div>
-          <div><b>3</b><span class="mono" data-i18n="car.s4">Languages</span></div>
+          <div><b>9</b><span class="mono" data-i18n="car.s4">Disciplines</span></div>
         </div>
       </div>
       <div class="mini-wrap">
@@ -1501,7 +1501,7 @@ html.calm [data-reveal], html.calm .card .frame img:first-child { animation: non
       `<div class="fi endpaper"><div class="plate"><span class="pl-k">${esc(b.exlibris)}</span><img src="img/avatar.webp" alt="" width="168" height="168"><span class="pl-n">Nayara J. N.</span><span class="pl-r">${esc(b.role)}</span><span class="pl-p">${esc(b.place)}</span></div></div>`,
       `<div class="fi page">${head(b, 1)}<h3 class="pg-title">${esc(b.c1t)}</h3><p class="pg-p drop">${esc(b.c1p)}</p><p class="pg-q">${esc(b.c1q)}</p><p class="pg-sub">${esc(b.langs)}</p><ul class="pg-list">${[[b.l1, b.l1v], [b.l2, b.l2v], [b.l3, b.l3v]].map(([a, v]) => `<li><span>${esc(a)}</span><em>${esc(v)}</em></li>`).join("")}</ul>${folio(1)}</div>`,
       `<div class="fi page">${head(b, 2)}<h3 class="pg-title">${esc(b.c2t)}</h3><ul class="bars">${C.craft.map(c => `<li style="--v:${V[c.lvl]}"><span>${esc(L(c.t))}</span><i></i><em>${esc(L(C.years[c.lvl]))}</em></li>`).join("")}</ul><p class="pg-note">${esc(b.c2note)}</p>${folio(2)}</div>`,
-      `<div class="fi page">${head(b, 3)}<h3 class="pg-title">${esc(b.c3t)}</h3><div class="pg-big"><b>5.0</b><span>★★★★★</span></div><p class="pg-cap">${esc(b.rating)}</p><div class="pg-stats"><div><b>3</b><span>${esc(b.done)}</span></div><div><b>2</b><span>${esc(b.reviews)}</span></div></div><ul class="pg-facts"><li>${esc(b.level)}</li><li>${esc(b.eng)}</li></ul><p class="pg-sub">${esc(b.recent)}</p><ul class="pg-jobs"><li><b>${esc(b.job1)}</b><span>${esc(b.job1w)} · ★ 5.0</span></li><li><b>${esc(b.job2)}</b><span>${esc(b.job2w)} · ★ 5.0</span></li></ul>${folio(3)}</div>`,
+      `<div class="fi page">${head(b, 3)}<h3 class="pg-title">${esc(b.c3t)}</h3><div class="pg-big"><b>5.0</b><span>★★★★★</span></div><p class="pg-cap">${esc(b.rating)}</p><ul class="pg-facts"><li>${esc(b.level)}</li><li>${esc(b.eng)}</li></ul><p class="pg-sub">${esc(b.recent)}</p><ul class="pg-jobs"><li><b>${esc(b.job1)}</b><span>${esc(b.job1w)} · ★ 5.0</span></li><li><b>${esc(b.job2)}</b><span>${esc(b.job2w)} · ★ 5.0</span></li></ul>${folio(3)}</div>`,
       `<div class="fi page">${head(b, 4)}<h3 class="pg-title">${esc(b.c4t)}</h3><blockquote class="pg-quote">${esc(b.quote)}</blockquote><p class="pg-by">${esc(b.by)}${b.qnote ? ` <em>· ${esc(b.qnote)}</em>` : ""}</p><ul class="pg-scores"><li><span>${esc(b.q1)}</span><b>5.0</b></li><li><span>${esc(b.q2)}</span><b>5.0</b></li><li><span>${esc(b.q3)}</span><b>5.0</b></li></ul>${folio(4)}</div>`,
       `<div class="fi page">${head(b, 5)}<h3 class="pg-title">${esc(b.c5t)}</h3><ol class="pg-svc">${C.services.map((s, i) => `<li><span class="n">${pad(i + 1)}</span><span><b>${esc(L(s.t))}</b><em>${esc(L(s.d))}</em></span></li>`).join("")}</ol>${folio(5)}</div>`,
       `<div class="fi page">${head(b, 6)}<h3 class="pg-title">${esc(b.c6t)}</h3><p class="pg-p">${esc(b.c6p)}</p><div class="pg-thumbs">${C.thumbs.map(s => `<img src="img/${s}-sm.webp" alt="" width="760" height="507" loading="lazy">`).join("")}</div><button type="button" class="pg-link" data-seework>${esc(b.c6link)} →</button>${folio(6)}</div>`,
