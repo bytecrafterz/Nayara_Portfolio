@@ -2,3 +2,6 @@ Thumbs.db
 desktop.ini
 .DS_Store
 __pycache__/
+
+# Workana page snapshots stay on this machine (job titles there carry the full name).
+source/workana-*/

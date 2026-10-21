@@ -339,14 +339,528 @@ window.SITE = {
     },
   ],
 
+  /* Real client projects on Workana (profile read on 21 Oct 2026). Quotes are verbatim, with translations.
+     Images come from tools/build_real.py; projects without stars are still open. */
+  clients: [
+   {
+    "id": "beyond",
+    "client": "Ileana M. T.",
+    "country": {
+     "en": "Argentina",
+     "pt": "Argentina",
+     "es": "Argentina"
+    },
+    "stars": 5,
+    "cat": {
+     "en": "Brand identity",
+     "pt": "Identidade de marca",
+     "es": "Identidad de marca"
+    },
+    "title": "Beyond 7 & Proyecto 0",
+    "sub": {
+     "en": "A consultancy and the new service it is launching",
+     "pt": "Uma consultoria e o novo serviço que ela lança",
+     "es": "Una consultora y el nuevo servicio que lanza"
+    },
+    "text": {
+     "en": "Ileana was launching Proyecto 0 inside her consultancy, Beyond 7, and wanted the two brands to feel like one family. I refined both logos, built a light palette taken from nature with gold as the thread between them, and set the typography and usage rules in a short brand guide. Then came two carousels, three launch stories and a set of metallic gold icons, all left editable so she can keep creating on her own.",
+     "pt": "A Ileana estava lançando o Proyecto 0 dentro da sua consultoria, a Beyond 7, e queria que as duas marcas parecessem da mesma família. Refinei os dois logos, criei uma paleta clara inspirada na natureza, com o dourado como fio entre elas, e defini tipografia e regras de uso num guia de marca curto. Depois vieram dois carrosséis, três stories de lançamento e um conjunto de ícones em dourado metálico, tudo editável para ela seguir criando sozinha.",
+     "es": "Ileana estaba lanzando Proyecto 0 dentro de su consultora, Beyond 7, y quería que las dos marcas se sintieran de la misma familia. Refiné ambos logos, armé una paleta clara tomada de la naturaleza, con el dorado como hilo entre las dos, y definí la tipografía y las reglas de uso en una guía de marca breve. Después vinieron dos carruseles, tres historias de lanzamiento y un set de íconos en dorado metálico, todo editable para que ella siga creando por su cuenta."
+    },
+    "deliv": {
+     "en": "Logo refinement · palette and typography · brand guide · 2 carousels · 3 stories · metallic icons",
+     "pt": "Refinamento dos logos · paleta e tipografia · guia de marca · 2 carrosséis · 3 stories · ícones metálicos",
+     "es": "Refinamiento de logos · paleta y tipografía · guía de marca · 2 carruseles · 3 historias · íconos metálicos"
+    },
+    "quote": {
+     "orig": "es",
+     "text": "Nayara me ayudó muy cordial y eficientemente a ajustar los logos de marcas y definir las bases de branding. También trabajamos algunos editables. Una experiencia muy recomendable!",
+     "tr": {
+      "en": "Nayara helped me very warmly and efficiently to adjust the brand logos and define the branding foundations. We also worked on some editable files. A highly recommended experience!",
+      "pt": "A Nayara me ajudou de forma muito cordial e eficiente a ajustar os logos das marcas e a definir as bases do branding. Também trabalhamos alguns editáveis. Uma experiência muito recomendável!"
+     }
+    },
+    "caps": [
+     {
+      "en": "Beyond 7, the consultancy mark in gold",
+      "pt": "Beyond 7, a marca da consultoria em dourado",
+      "es": "Beyond 7, la marca de la consultora en dorado"
+     },
+     {
+      "en": "Proyecto 0, the new service",
+      "pt": "Proyecto 0, o novo serviço",
+      "es": "Proyecto 0, el nuevo servicio"
+     },
+     {
+      "en": "Business cards in the shared gold",
+      "pt": "Cartões de visita no dourado em comum",
+      "es": "Tarjetas en el dorado compartido"
+     },
+     {
+      "en": "Logo versions from the brand guide",
+      "pt": "Versões do logo no guia de marca",
+      "es": "Versiones del logo en la guía de marca"
+     },
+     {
+      "en": "The light palette: forest, mountain and sand, gold as the accent",
+      "pt": "A paleta clara: floresta, montanha e areia, com o dourado de destaque",
+      "es": "La paleta clara: bosque, montaña y arena, con el dorado como acento"
+     },
+     {
+      "en": "Carousels and launch stories",
+      "pt": "Carrosséis e stories de lançamento",
+      "es": "Carruseles e historias de lanzamiento"
+     }
+    ],
+    "imgs": 6
+   },
+   {
+    "id": "allyo",
+    "client": "C. M.",
+    "country": {
+     "en": "United States",
+     "pt": "Estados Unidos",
+     "es": "Estados Unidos"
+    },
+    "stars": 5,
+    "cat": {
+     "en": "Packaging",
+     "pt": "Embalagem",
+     "es": "Packaging"
+    },
+    "title": "Allyo Global Logistics",
+    "sub": {
+     "en": "Wine box, gift boxes and a desk calendar",
+     "pt": "Caixa de vinho, caixas de presente e calendário de mesa",
+     "es": "Caja de vino, cajas de regalo y calendario de escritorio"
+    },
+    "text": {
+     "en": "Cristina needed corporate gifts for her logistics brand, built around her own bottle and insert measurements. I drew the dielines for a wine box with a crash-lock bottom in two bottle sizes, two gift boxes, each as a rigid set-up box or a folding carton, with step-by-step assembly guides, and a desk calendar with its box, tent stand and thirteen pages for 2027.",
+     "pt": "A Cristina precisava de brindes corporativos para a sua marca de logística, feitos a partir das medidas da garrafa e dos encaixes dela. Desenhei as facas de uma caixa de vinho com fundo automático em dois tamanhos de garrafa, de duas caixas de presente, cada uma em versão rígida ou em cartão dobrável, com guias de montagem passo a passo, e de um calendário de mesa com caixa, suporte e treze páginas para 2027.",
+     "es": "Cristina necesitaba regalos corporativos para su marca de logística, hechos a partir de las medidas de su botella y de sus insertos. Dibujé los troqueles de una caja de vino con fondo automático en dos tamaños de botella, de dos cajas de regalo, cada una en versión rígida o en cartón plegable, con guías de armado paso a paso, y de un calendario de escritorio con su caja, su soporte y trece páginas para 2027."
+    },
+    "deliv": {
+     "en": "Dielines with bleed and fold lines · assembly guides · 13 calendar pages · print specifications",
+     "pt": "Facas com sangria e vincos · guias de montagem · 13 páginas de calendário · especificações de impressão",
+     "es": "Troqueles con sangrado y pliegues · guías de armado · 13 páginas de calendario · especificaciones de impresión"
+    },
+    "quote": null,
+    "caps": [
+     {
+      "en": "The dielines and a calendar month",
+      "pt": "As facas e um mês do calendário",
+      "es": "Los troqueles y un mes del calendario"
+     },
+     {
+      "en": "Calendar cover, 2027",
+      "pt": "Capa do calendário, 2027",
+      "es": "Portada del calendario, 2027"
+     },
+     {
+      "en": "A month page; her team photos go in the frame",
+      "pt": "Uma página de mês; as fotos da equipe dela entram no quadro",
+      "es": "Una página de mes; las fotos de su equipo van en el marco"
+     },
+     {
+      "en": "Wine box with crash-lock bottom",
+      "pt": "Caixa de vinho com fundo automático",
+      "es": "Caja de vino con fondo automático"
+     },
+     {
+      "en": "Rigid gift box, assembly guide",
+      "pt": "Caixa de presente rígida, guia de montagem",
+      "es": "Caja de regalo rígida, guía de armado"
+     },
+     {
+      "en": "Calendar box",
+      "pt": "Caixa do calendário",
+      "es": "Caja del calendario"
+     }
+    ],
+    "imgs": 6
+   },
+   {
+    "id": "fernanda",
+    "client": "Fernanda S. R.",
+    "country": {
+     "en": "Brazil",
+     "pt": "Brasil",
+     "es": "Brasil"
+    },
+    "stars": 5,
+    "cat": {
+     "en": "Brand & campaign",
+     "pt": "Marca e campanha",
+     "es": "Marca y campaña"
+    },
+    "title": "Dra. Fernanda Ribeiro",
+    "sub": {
+     "en": "Identity and a four-piece campaign for an aesthetics clinic",
+     "pt": "Identidade e campanha de quatro peças para uma clínica de estética",
+     "es": "Identidad y campaña de cuatro piezas para una clínica estética"
+    },
+    "text": {
+     "en": "An advanced aesthetics clinic wanted to look as refined as its care. I designed the identity, with logo and symbol in four colourways, a pattern and a brand guide, and a campaign of four arts, each prepared for print in A4 and for the Instagram feed and stories.",
+     "pt": "Uma clínica de estética avançada queria parecer tão refinada quanto o seu atendimento. Criei a identidade, com logo e símbolo em quatro versões de cor, um padrão e um guia de marca, e uma campanha de quatro artes, cada uma preparada para impressão em A4 e para o feed e os stories do Instagram.",
+     "es": "Una clínica de estética avanzada quería verse tan refinada como su atención. Diseñé la identidad, con logo y símbolo en cuatro versiones de color, un patrón y una guía de marca, y una campaña de cuatro artes, cada una preparada para impresión en A4 y para el feed y las historias de Instagram."
+    },
+    "deliv": {
+     "en": "Logo and symbol · pattern · brand guide · 4 arts in A4, feed and stories",
+     "pt": "Logo e símbolo · padrão · guia de marca · 4 artes em A4, feed e stories",
+     "es": "Logo y símbolo · patrón · guía de marca · 4 artes en A4, feed e historias"
+    },
+    "quote": null,
+    "caps": [
+     {
+      "en": "The four campaign arts",
+      "pt": "As quatro artes da campanha",
+      "es": "Las cuatro artes de la campaña"
+     },
+     {
+      "en": "Feed and story versions",
+      "pt": "Versões para feed e stories",
+      "es": "Versiones para feed e historias"
+     },
+     {
+      "en": "The brand guide",
+      "pt": "O guia de marca",
+      "es": "La guía de marca"
+     }
+    ],
+    "imgs": 3
+   },
+   {
+    "id": "luh",
+    "client": "P. L. R.",
+    "country": {
+     "en": "Brazil",
+     "pt": "Brasil",
+     "es": "Brasil"
+    },
+    "stars": 5,
+    "cat": {
+     "en": "Editable templates",
+     "pt": "Modelos editáveis",
+     "es": "Plantillas editables"
+    },
+    "title": "Luh Reis · Personal Trainer",
+    "sub": {
+     "en": "Workout sheets her students open on the phone",
+     "pt": "Planilhas de treino que os alunos abrem no celular",
+     "es": "Planillas de entrenamiento que sus alumnos abren en el celular"
+    },
+    "text": {
+     "en": "A personal trainer wanted workout sheets that look like her brand and that she can edit herself in Canva. I made the ABC and ABCDE sets: a cover, a how-to page and one page per workout, with sets, reps, load and rest laid out to read well on a phone. Along the way I gave her logo a full set of colour versions too.",
+     "pt": "Uma personal trainer queria planilhas de treino com a cara da marca dela e que ela mesma pudesse editar no Canva. Fiz os conjuntos ABC e ABCDE: capa, página de como usar e uma página por treino, com séries, repetições, carga e descanso organizados para ler bem no celular. No caminho, ainda dei ao logo dela um conjunto completo de versões de cor.",
+     "es": "Una entrenadora personal quería planillas de entrenamiento con la cara de su marca y que ella misma pudiera editar en Canva. Hice los conjuntos ABC y ABCDE: portada, página de cómo usar y una página por entrenamiento, con series, repeticiones, carga y descanso ordenados para leerse bien en el celular. De paso, le di a su logo un juego completo de versiones de color."
+    },
+    "deliv": {
+     "en": "ABC and ABCDE sheets for Canva · PDF for students · logo in six colours",
+     "pt": "Planilhas ABC e ABCDE para o Canva · PDF para os alunos · logo em seis cores",
+     "es": "Planillas ABC y ABCDE para Canva · PDF para los alumnos · logo en seis colores"
+    },
+    "quote": {
+     "orig": "pt",
+     "text": "Profissional muito eficiente, compreendeu de forma muito rápida a minha necessidade e entregou no mesmo dia um design profissional, lindo e funcional. Além disso, fez uma gentileza no meu logo e todas as variações, algo que nem estava previsto. Com certeza voltarei a trabalhar com ela novamente, pois foi impecável.",
+     "tr": {
+      "en": "A very efficient professional who understood what I needed very quickly and delivered a professional, beautiful and functional design the same day. On top of that, she kindly reworked my logo and all its variations, which wasn't even planned. I will definitely work with her again, because it was flawless.",
+      "es": "Una profesional muy eficiente, entendió muy rápido lo que necesitaba y entregó el mismo día un diseño profesional, bonito y funcional. Además, tuvo la gentileza de trabajar mi logo y todas sus variaciones, algo que ni siquiera estaba previsto. Sin duda volveré a trabajar con ella, porque fue impecable."
+     }
+    },
+    "caps": [
+     {
+      "en": "The ABC set and her logo",
+      "pt": "O conjunto ABC e o logo dela",
+      "es": "El conjunto ABC y su logo"
+     },
+     {
+      "en": "The ABCDE set",
+      "pt": "O conjunto ABCDE",
+      "es": "El conjunto ABCDE"
+     },
+     {
+      "en": "Her logo in the brand colours",
+      "pt": "O logo dela nas cores da marca",
+      "es": "Su logo en los colores de la marca"
+     }
+    ],
+    "imgs": 3
+   },
+   {
+    "id": "book",
+    "client": "Arnaldo C. J.",
+    "country": {
+     "en": "Brazil",
+     "pt": "Brasil",
+     "es": "Brasil"
+    },
+    "stars": 5,
+    "cat": {
+     "en": "Editorial design",
+     "pt": "Design editorial",
+     "es": "Diseño editorial"
+    },
+    "title": "Autismo para o povo",
+    "sub": {
+     "en": "Layout of a book, for print and e-book",
+     "pt": "Diagramação de um livro, impresso e e-book",
+     "es": "Maquetación de un libro, impreso y e-book"
+    },
+    "text": {
+     "en": "A book about autism written to be understood by everyone. I laid out the interior for the printer at 14 × 21 cm, rebuilt the contents with automatic page numbers, cleaned every broken line and page break, and prepared a digital PDF with a clickable contents page, an EPUB for the e-book stores, the editable files and a report listing every change.",
+     "pt": "Um livro sobre autismo escrito para ser entendido por todos. Diagramei o miolo para a gráfica em 14 × 21 cm, refiz o sumário com numeração automática, limpei cada quebra de linha e de página indevida e preparei um PDF digital com sumário clicável, um EPUB para as lojas de e-book, os arquivos editáveis e um relatório com cada alteração.",
+     "es": "Un libro sobre autismo escrito para que todos lo entiendan. Maqueté el interior para la imprenta en 14 × 21 cm, rehíce el índice con numeración automática, limpié cada salto de línea y de página indebido y preparé un PDF digital con índice clicable, un EPUB para las tiendas de e-books, los archivos editables y un informe con cada cambio."
+    },
+    "deliv": {
+     "en": "Print-ready interior, 182 pages · digital PDF · EPUB · editable files · change report",
+     "pt": "Miolo pronto para a gráfica, 182 páginas · PDF digital · EPUB · arquivos editáveis · relatório de alterações",
+     "es": "Interior listo para imprenta, 182 páginas · PDF digital · EPUB · archivos editables · informe de cambios"
+    },
+    "quote": null,
+    "caps": [
+     {
+      "en": "Contents, cover and a chapter page",
+      "pt": "Sumário, capa e uma página de capítulo",
+      "es": "Índice, portada y una página de capítulo"
+     },
+     {
+      "en": "The digital edition opens with the author's cover",
+      "pt": "A edição digital abre com a capa do autor",
+      "es": "La edición digital abre con la portada del autor"
+     },
+     {
+      "en": "Contents and running text",
+      "pt": "Sumário e texto corrido",
+      "es": "Índice y texto corrido"
+     }
+    ],
+    "imgs": 3
+   },
+   {
+    "id": "cipreste",
+    "client": "Maria J. B. C.",
+    "country": {
+     "en": "Brazil",
+     "pt": "Brasil",
+     "es": "Brasil"
+    },
+    "stars": null,
+    "cat": {
+     "en": "Editorial design",
+     "pt": "Design editorial",
+     "es": "Diseño editorial"
+    },
+    "title": "Cipreste Móveis Planejados",
+    "sub": {
+     "en": "A portfolio for a young made-to-measure furniture studio",
+     "pt": "Um portfólio para uma marcenaria planejada que está começando",
+     "es": "Un portafolio para un taller de muebles a medida que recién empieza"
+    },
+    "text": {
+     "en": "A furniture studio new on the market needed a portfolio that looks complete even with only a few projects. I designed an editorial A4 layout with arched photos and gold details, treated their own photos for light, colour and straight lines, and set one model page per project that they duplicate in Canva as new work comes in.",
+     "pt": "Uma marcenaria nova no mercado precisava de um portfólio que parecesse completo mesmo com poucos projetos. Criei um layout editorial em A4 com fotos em arco e detalhes em dourado, tratei as próprias fotos deles (luz, cor e linhas retas) e montei uma página modelo por projeto, que eles duplicam no Canva a cada novo trabalho.",
+     "es": "Un taller de muebles nuevo en el mercado necesitaba un portafolio que se viera completo aun con pocos proyectos. Diseñé una maqueta editorial en A4 con fotos en arco y detalles en dorado, traté sus propias fotos (luz, color y líneas rectas) y armé una página modelo por proyecto, que ellos duplican en Canva con cada trabajo nuevo."
+    },
+    "deliv": {
+     "en": "13-page portfolio · print PDF and light phone PDF · Canva file · treated photos",
+     "pt": "Portfólio de 13 páginas · PDF para impressão e PDF leve para celular · arquivo para o Canva · fotos tratadas",
+     "es": "Portafolio de 13 páginas · PDF para imprimir y PDF liviano para celular · archivo para Canva · fotos tratadas"
+    },
+    "quote": null,
+    "caps": [
+     {
+      "en": "Index, cover and a project page",
+      "pt": "Sumário, capa e uma página de projeto",
+      "es": "Índice, portada y una página de proyecto"
+     },
+     {
+      "en": "The cover",
+      "pt": "A capa",
+      "es": "La portada"
+     },
+     {
+      "en": "A project page: the slatted bar",
+      "pt": "Uma página de projeto: o bar ripado",
+      "es": "Una página de proyecto: el bar de listones"
+     },
+     {
+      "en": "All thirteen pages",
+      "pt": "As treze páginas",
+      "es": "Las trece páginas"
+     }
+    ],
+    "imgs": 4
+   },
+   {
+    "id": "vilela",
+    "client": "M. L.",
+    "country": {
+     "en": "Brazil",
+     "pt": "Brasil",
+     "es": "Brasil"
+    },
+    "stars": null,
+    "cat": {
+     "en": "Logo vectorization",
+     "pt": "Vetorização de logo",
+     "es": "Vectorización de logo"
+    },
+    "title": "Rancho Vilela Loureiro",
+    "sub": {
+     "en": "A branding iron and a ranch seal, redrawn as clean vectors",
+     "pt": "Uma marca de ferro e um selo de rancho, redesenhados em vetor",
+     "es": "Una marca de hierro y un sello de rancho, redibujados en vector"
+    },
+    "text": {
+     "en": "Marcos wanted his two marks exactly as they are, only sharp at any size. Instead of auto-tracing, I redrew the branding-iron monogram and the ranch seal as clean curves over his originals, so the edges stay smooth from a business card to a sign, in one colour and in full colour.",
+     "pt": "O Marcos queria as duas marcas exatamente como são, só que nítidas em qualquer tamanho. Em vez de vetorizar no automático, redesenhei o monograma da marca de ferro e o selo do rancho em curvas limpas sobre os originais dele, para as bordas ficarem suaves do cartão de visita à placa, em uma cor e colorido.",
+     "es": "Marcos quería sus dos marcas exactamente como son, solo que nítidas en cualquier tamaño. En lugar de vectorizar en automático, redibujé el monograma de la marca de hierro y el sello del rancho en curvas limpias sobre sus originales, para que los bordes queden suaves de la tarjeta al cartel, en un color y a todo color."
+    },
+    "deliv": {
+     "en": "Both marks in AI, EPS, SVG, PDF and PNG · one-colour and colour versions",
+     "pt": "As duas marcas em AI, EPS, SVG, PDF e PNG · versões em uma cor e colorida",
+     "es": "Las dos marcas en AI, EPS, SVG, PDF y PNG · versiones en un color y a color"
+    },
+    "quote": null,
+    "caps": [
+     {
+      "en": "The ranch seal",
+      "pt": "O selo do rancho",
+      "es": "El sello del rancho"
+     },
+     {
+      "en": "The branding-iron mark",
+      "pt": "A marca de ferro",
+      "es": "La marca de hierro"
+     },
+     {
+      "en": "The seal, one colour and full colour",
+      "pt": "O selo, em uma cor e colorido",
+      "es": "El sello, en un color y a color"
+     }
+    ],
+    "imgs": 3
+   },
+   {
+    "id": "will",
+    "client": "W.",
+    "country": {
+     "en": "Mexico",
+     "pt": "México",
+     "es": "México"
+    },
+    "stars": 5,
+    "cat": {
+     "en": "YouTube thumbnails",
+     "pt": "Miniaturas para YouTube",
+     "es": "Miniaturas para YouTube"
+    },
+    "title": "¿Qué les pasó?",
+    "sub": {
+     "en": "Thumbnails for a business-history channel",
+     "pt": "Miniaturas para um canal de histórias de negócios",
+     "es": "Miniaturas para un canal de historias de negocios"
+    },
+    "text": {
+     "en": "A Spanish-language channel about the rise and fall of famous companies, where every thumbnail has to win the click. I built each one piece by piece in a layered PSD, in the channel's own style: the textured wall, the cut-out figure, the 3D trend arrow, the brand plates and the headline. The figure is AI-generated, as the channel asked.",
+     "pt": "Um canal em espanhol sobre a ascensão e a queda de empresas famosas, em que cada miniatura precisa ganhar o clique. Montei cada uma peça por peça num PSD em camadas, no estilo do próprio canal: a parede texturizada, a figura recortada, a seta 3D de tendência, as placas das marcas e o título. A figura é gerada com IA, como o canal pediu.",
+     "es": "Un canal en español sobre el auge y la caída de empresas famosas, donde cada miniatura tiene que ganarse el clic. Armé cada una pieza por pieza en un PSD por capas, con el estilo propio del canal: la pared con textura, la figura recortada, la flecha 3D de tendencia, las placas de las marcas y el titular. La figura está generada con IA, como pidió el canal."
+    },
+    "deliv": {
+     "en": "PNG at 1280 and 1920 px · layered PSD with alternate headlines",
+     "pt": "PNG em 1280 e 1920 px · PSD em camadas com títulos alternativos",
+     "es": "PNG en 1280 y 1920 px · PSD por capas con titulares alternativos"
+    },
+    "quote": null,
+    "caps": [
+     {
+      "en": "Thumbnail for the luxury-brands episode",
+      "pt": "Miniatura do episódio das marcas de luxo",
+      "es": "Miniatura del episodio de las marcas de lujo"
+     },
+     {
+      "en": "Full size, 16:9",
+      "pt": "Tamanho real, 16:9",
+      "es": "Tamaño completo, 16:9"
+     }
+    ],
+    "imgs": 2
+   },
+   {
+    "id": "angel",
+    "client": "Angel E.",
+    "country": {
+     "en": "Spain",
+     "pt": "Espanha",
+     "es": "España"
+    },
+    "stars": 5,
+    "noimg": "quote",
+    "cat": {
+     "en": "Image editing",
+     "pt": "Edição de imagens",
+     "es": "Edición de imágenes"
+    },
+    "title": {
+     "en": "Retouching for a website and online store",
+     "pt": "Retoque para site e loja online",
+     "es": "Retoque para web y tienda online"
+    },
+    "sub": null,
+    "text": null,
+    "deliv": null,
+    "quote": {
+     "orig": "es",
+     "text": "Muy buena experiencia trabajando con ella. Ha entendido perfectamente lo que buscábamos desde el principio y ha sabido trasladarlo a un diseño profesional, moderno y muy cuidado. Destacaría especialmente su atención al detalle, buena comunicación y predisposición para realizar cambios y mejoras durante todo el proyecto. El resultado final ha cumplido totalmente nuestras expectativas. Sin duda, volveríamos a contar con ella para futuros trabajos.",
+     "tr": {
+      "en": "A very good experience working with her. She understood exactly what we were looking for from the start and turned it into a professional, modern and carefully crafted design. I would especially highlight her attention to detail, good communication and willingness to make changes and improvements throughout the project. The final result fully met our expectations. We would certainly work with her again on future projects.",
+      "pt": "Uma experiência muito boa trabalhando com ela. Entendeu perfeitamente o que buscávamos desde o início e soube transformar isso em um design profissional, moderno e muito cuidadoso. Destaco especialmente a atenção aos detalhes, a boa comunicação e a disposição para fazer mudanças e melhorias durante todo o projeto. O resultado final atendeu totalmente às nossas expectativas. Sem dúvida, voltaríamos a contar com ela em trabalhos futuros."
+     }
+    },
+    "caps": [],
+    "imgs": 0
+   },
+   {
+    "id": "photos",
+    "client": "J. J. D. P.",
+    "country": {
+     "en": "Brazil",
+     "pt": "Brasil",
+     "es": "Brasil"
+    },
+    "stars": 5,
+    "noimg": "private",
+    "cat": {
+     "en": "Photo editing",
+     "pt": "Edição de fotos",
+     "es": "Edición de fotos"
+    },
+    "title": {
+     "en": "250 photos of an 80th birthday",
+     "pt": "250 fotos de um aniversário de 80 anos",
+     "es": "250 fotos de un cumpleaños de 80 años"
+    },
+    "sub": null,
+    "text": {
+     "en": "Light and colour edited photo by photo, faces kept true. The photos belong to a family, so they stay private.",
+     "pt": "Luz e cor ajustadas foto a foto, com os rostos preservados. As fotos são de uma família, por isso ficam privadas.",
+     "es": "Luz y color ajustados foto por foto, con los rostros intactos. Las fotos son de una familia, así que quedan privadas."
+    },
+    "deliv": null,
+    "quote": null,
+    "caps": [],
+    "imgs": 0
+   }
+  ],
+
   /* Labels the script writes into the page. */
   ui: {
-    en: { all: "All", project: "project", projects: "projects", visuals: "3 visuals", view: "View", open: "Open", close: "Close", filter: "Filter", concept: "Concept study", stack: "Suggested production stack", palette: "Palette", next: "Next project", end: "Independent concept exploration", endMotion: "Still keyframes / visual treatment", motion: "Motion effects", on: "On", off: "Off" },
-    pt: { all: "Todos", project: "projeto", projects: "projetos", visuals: "3 visuais", view: "Ver", open: "Abrir", close: "Fechar", filter: "Filtrar", concept: "Estudo de conceito", stack: "Stack de produção sugerido", palette: "Paleta", next: "Próximo projeto", end: "Exploração de conceito independente", endMotion: "Quadros-chave estáticos / tratamento visual", motion: "Efeitos de movimento", on: "Ligados", off: "Desligados" },
-    es: { all: "Todos", project: "proyecto", projects: "proyectos", visuals: "3 visuales", view: "Ver", open: "Abrir", close: "Cerrar", filter: "Filtrar", concept: "Estudio de concepto", stack: "Stack de producción sugerido", palette: "Paleta", next: "Siguiente proyecto", end: "Exploración de concepto independiente", endMotion: "Fotogramas clave fijos / tratamiento visual", motion: "Efectos de movimiento", on: "Activados", off: "Desactivados" },
+    en: { all: "All", project: "project", projects: "projects", visuals: "3 visuals", view: "View", open: "Open", close: "Close", filter: "Filter", concept: "Concept study", stack: "Suggested production stack", palette: "Palette", next: "Next project", end: "Independent concept exploration", endMotion: "Still keyframes / visual treatment", motion: "Motion effects", on: "On", off: "Off", inProgress: "In progress", inProgressLong: "In progress, not rated yet", clientProject: "Client project", client: "Client", delivered: "Delivered", rating: "Rating", onWorkana: "5.0 on Workana", realNote: "Real client project · shown as delivered", nextClient: "Next client project", trFrom: "Translated from", lang_es: "Spanish", lang_pt: "Portuguese", seeOrig: "Read the original" },
+    pt: { all: "Todos", project: "projeto", projects: "projetos", visuals: "3 visuais", view: "Ver", open: "Abrir", close: "Fechar", filter: "Filtrar", concept: "Estudo de conceito", stack: "Stack de produção sugerido", palette: "Paleta", next: "Próximo projeto", end: "Exploração de conceito independente", endMotion: "Quadros-chave estáticos / tratamento visual", motion: "Efeitos de movimento", on: "Ligados", off: "Desligados", inProgress: "Em andamento", inProgressLong: "Em andamento, ainda sem avaliação", clientProject: "Projeto de cliente", client: "Cliente", delivered: "Entregue", rating: "Avaliação", onWorkana: "5.0 no Workana", realNote: "Projeto real de cliente · mostrado como foi entregue", nextClient: "Próximo projeto de cliente", trFrom: "Traduzido do", lang_es: "espanhol", lang_pt: "português", seeOrig: "Ler o original" },
+    es: { all: "Todos", project: "proyecto", projects: "proyectos", visuals: "3 visuales", view: "Ver", open: "Abrir", close: "Cerrar", filter: "Filtrar", concept: "Estudio de concepto", stack: "Stack de producción sugerido", palette: "Paleta", next: "Siguiente proyecto", end: "Exploración de concepto independiente", endMotion: "Fotogramas clave fijos / tratamiento visual", motion: "Efectos de movimiento", on: "Activados", off: "Desactivados", inProgress: "En curso", inProgressLong: "En curso, todavía sin calificación", clientProject: "Proyecto de cliente", client: "Cliente", delivered: "Entregado", rating: "Calificación", onWorkana: "5.0 en Workana", realNote: "Proyecto real de cliente · mostrado tal como se entregó", nextClient: "Siguiente proyecto de cliente", trFrom: "Traducido del", lang_es: "español", lang_pt: "portugués", seeOrig: "Leer el original" },
   },
 
-  /* The "My Career" book. Facts come from the public Workana profile (6 Oct 2026). */
+  /* The "My Career" book. Facts come from the public Workana profile (21 Oct 2026); its recent jobs and quotes come from `clients`. */
   career: {
     craft: [
       { lvl: 4, t: { en: "Photoshop", pt: "Photoshop", es: "Photoshop" } },
@@ -384,11 +898,11 @@ window.SITE = {
         langs: "Languages", l1: "Portuguese", l1v: "native", l2: "English", l2v: "high intermediate", l3: "Spanish", l3v: "basic",
         c2t: "Craft & years", c2note: "Years of experience as listed on my Workana profile.",
         c3t: "On Workana", rating: "average client rating", done: "projects delivered", reviews: "client reviews",
-        level: "Bronze level · member since September 2026", eng: "Workana English test: 80%, top 12%",
-        recent: "Delivered work",
+        level: "Gold level · member since September 2026", eng: "Workana English test: 80%, top 12%",
+        recent: "Recent client work",
         job1: "Image editing & retouching for web and e-commerce", job1w: "Client in Spain",
         job2: "Editorial layout of a 175-page book", job2w: "Client in Brazil",
-        c4t: "In a client's words",
+        c4t: "In my clients' words",
         quote: "A very good experience working with her. She understood exactly what we were looking for from the start and turned it into a professional, modern and carefully crafted design. I would especially highlight her attention to detail, good communication and willingness to make changes and improvements throughout the project.",
         by: "Angel E., Spain", qnote: "Translated from Spanish",
         q1: "Communication", q2: "Deadlines", q3: "Quality",
@@ -407,11 +921,11 @@ window.SITE = {
         langs: "Idiomas", l1: "Português", l1v: "nativo", l2: "Inglês", l2v: "intermediário alto", l3: "Espanhol", l3v: "básico",
         c2t: "Ofício & anos", c2note: "Anos de experiência conforme meu perfil no Workana.",
         c3t: "No Workana", rating: "nota média dos clientes", done: "projetos entregues", reviews: "avaliações de clientes",
-        level: "Nível Bronze · membro desde setembro de 2026", eng: "Teste de inglês do Workana: 80%, top 12%",
-        recent: "Trabalhos entregues",
+        level: "Nível Ouro · membro desde setembro de 2026", eng: "Teste de inglês do Workana: 80%, top 12%",
+        recent: "Trabalhos recentes para clientes",
         job1: "Edição e retoque de imagens para web e e-commerce", job1w: "Cliente na Espanha",
         job2: "Diagramação editorial de um livro de 175 páginas", job2w: "Cliente no Brasil",
-        c4t: "Nas palavras de um cliente",
+        c4t: "Nas palavras das minhas clientes",
         quote: "Uma experiência muito boa trabalhando com ela. Entendeu perfeitamente o que buscávamos desde o início e soube transformar isso em um design profissional, moderno e muito cuidadoso. Destaco especialmente sua atenção aos detalhes, a boa comunicação e a disposição para fazer mudanças e melhorias durante todo o projeto.",
         by: "Angel E., Espanha", qnote: "Traduzido do espanhol",
         q1: "Comunicação", q2: "Prazos", q3: "Qualidade",
@@ -430,11 +944,11 @@ window.SITE = {
         langs: "Idiomas", l1: "Portugués", l1v: "nativo", l2: "Inglés", l2v: "intermedio alto", l3: "Español", l3v: "básico",
         c2t: "Oficio y años", c2note: "Años de experiencia según mi perfil de Workana.",
         c3t: "En Workana", rating: "calificación media de clientes", done: "proyectos entregados", reviews: "reseñas de clientes",
-        level: "Nivel Bronce · miembro desde septiembre de 2026", eng: "Prueba de inglés de Workana: 80%, top 12%",
-        recent: "Trabajos entregados",
+        level: "Nivel Oro · miembro desde septiembre de 2026", eng: "Prueba de inglés de Workana: 80%, top 12%",
+        recent: "Trabajos recientes para clientes",
         job1: "Edición y retoque de imágenes para web y e-commerce", job1w: "Cliente en España",
         job2: "Maquetación editorial de un libro de 175 páginas", job2w: "Cliente en Brasil",
-        c4t: "En palabras de un cliente",
+        c4t: "En palabras de mis clientas",
         quote: "Muy buena experiencia trabajando con ella. Ha entendido perfectamente lo que buscábamos desde el principio y ha sabido trasladarlo a un diseño profesional, moderno y muy cuidado. Destacaría especialmente su atención al detalle, buena comunicación y predisposición para realizar cambios y mejoras durante todo el proyecto.",
         by: "Angel E., España", qnote: "",
         q1: "Comunicación", q2: "Plazos", q3: "Calidad",
@@ -451,14 +965,18 @@ window.SITE = {
   strings: {
     pt: {
       "skip": "Pular para os trabalhos", "a.langs": "Idioma", "a.filters": "Filtrar projetos", "a.nav": "Seções",
-      "nav.work": "Trabalhos", "nav.disc": "Disciplinas", "nav.career": "Carreira", "nav.contact": "Contato",
+      "nav.clients": "Clientes", "nav.work": "Trabalhos", "nav.disc": "Disciplinas", "nav.career": "Carreira", "nav.contact": "Contato",
       "btn.career": "Minha Carreira", "btn.careerSub": "Abrir o livro",
       "hero.eyebrow": "Direção de arte · Design · Narrativa visual",
       "hero.title": "<span class=\"ln\"><span>Um ponto</span></span> <span class=\"ln\"><span>de <em class=\"foil\">vista.</em></span></span>",
       "hero.intro": "Identidades únicas. Detalhes pensados.<br>Uma coleção de ideias que ganham forma.",
       "hero.explore": "Ver trabalhos selecionados", "hero.count": "20 projetos",
-      "hero.sign": "Portfólio de Nayara J. N. · Brasil", "hero.tag": "Designer gráfica · Brasil", "hero.alt": "Retrato de Nayara J. N.", "foot.alt": "Nayara J. N. no estúdio",
+      "hero.sign": "Portfólio de Nayara J. N. · Brasil", "hero.proof": "Nível Ouro no Workana · veja os trabalhos para clientes", "hero.tag": "Designer gráfica · Brasil", "hero.alt": "Retrato de Nayara J. N.", "foot.alt": "Nayara J. N. no estúdio",
       "hero.b1": "Trabalhos selecionados / 2026", "hero.b2": "Mundos de marca, objetos & experiências",
+      "cl.kicker": "Projetos reais · Workana", "cl.title": "Trabalhos para <em>clientes</em>",
+      "cl.lede": "Briefings reais, prazos reais.<br>Cinco estrelas em todas as avaliações.",
+      "cl.note": "Entregues pelo Workana para clientes no Brasil, na Argentina, no México, na Espanha e nos Estados Unidos, e mostrados aqui como foram entregues.",
+      "cl.p1": "Nota no Workana", "cl.gold": "Ouro", "cl.p2": "Nível no Workana", "cl.p3": "Onde estão meus clientes", "cl.all": "Todas as avaliações no Workana",
       "work.kicker": "A coleção", "work.title": "Trabalhos <em>selecionados</em><sup>20</sup>",
       "work.lede": "Vinte estudos de conceito.<br>Sessenta perspectivas.",
       "work.note": "Todos os projetos aqui são estudos de conceito independentes. As marcas são fictícias.",
@@ -466,22 +984,26 @@ window.SITE = {
       "disc.text": "Da identidade no papel a um mundo na tela, cada estudo explora uma forma diferente de fazer uma ideia ser sentida.",
       "car.kicker": "A história até aqui", "car.title": "Uma carreira <em>encadernada</em><br>num pequeno livro.",
       "car.text": "Experiência, avaliações de clientes e os trabalhos por trás delas, reunidos num livro. Abra e vire as páginas.",
-      "car.s1": "Nota no Workana", "car.s2": "Estudos de conceito", "car.s3": "Anos de Photoshop", "car.s4": "Disciplinas",
+      "car.s1": "Nota no Workana", "car.s2": "Nível no Workana", "car.s3": "Anos de Photoshop", "car.s4": "Estudos de conceito",
       "car.hint": "Clique no livro para abrir",
       "foot.kicker": "Contato", "foot.title": "Boas ideias merecem<br><em>ser vistas.</em>",
       "foot.text": "Envie seu briefing pelo Workana. Respondo em português e inglês, e também recebo briefings em espanhol.",
-      "foot.cta": "Contratar no Workana", "foot.note": "Portfólio de conceitos · As marcas são fictícias", "foot.top": "Voltar ao topo",
+      "foot.cta": "Contratar no Workana", "foot.note": "Os trabalhos para clientes são reais · Os estudos de conceito usam marcas fictícias", "foot.top": "Voltar ao topo",
     },
     es: {
       "skip": "Saltar a los trabajos", "a.langs": "Idioma", "a.filters": "Filtrar proyectos", "a.nav": "Secciones",
-      "nav.work": "Trabajos", "nav.disc": "Disciplinas", "nav.career": "Trayectoria", "nav.contact": "Contacto",
+      "nav.clients": "Clientes", "nav.work": "Trabajos", "nav.disc": "Disciplinas", "nav.career": "Trayectoria", "nav.contact": "Contacto",
       "btn.career": "Mi Carrera", "btn.careerSub": "Abrir el libro",
       "hero.eyebrow": "Dirección de arte · Diseño · Narrativa visual",
       "hero.title": "<span class=\"ln\"><span>Un punto</span></span> <span class=\"ln\"><span>de <em class=\"foil\">vista.</em></span></span>",
       "hero.intro": "Identidades únicas. Detalles cuidados.<br>Una colección de ideas hechas visibles.",
       "hero.explore": "Ver trabajos seleccionados", "hero.count": "20 proyectos",
-      "hero.sign": "Portafolio de Nayara J. N. · Brasil", "hero.tag": "Diseñadora gráfica · Brasil", "hero.alt": "Retrato de Nayara J. N.", "foot.alt": "Nayara J. N. en el estudio",
+      "hero.sign": "Portafolio de Nayara J. N. · Brasil", "hero.proof": "Nivel Oro en Workana · mira el trabajo para clientes", "hero.tag": "Diseñadora gráfica · Brasil", "hero.alt": "Retrato de Nayara J. N.", "foot.alt": "Nayara J. N. en el estudio",
       "hero.b1": "Trabajos seleccionados / 2026", "hero.b2": "Mundos de marca, objetos y experiencias",
+      "cl.kicker": "Proyectos reales · Workana", "cl.title": "Trabajo para <em>clientes</em>",
+      "cl.lede": "Briefs reales, plazos reales.<br>Cinco estrellas en cada reseña.",
+      "cl.note": "Entregados por Workana a clientes de Brasil, Argentina, México, España y Estados Unidos, y mostrados aquí tal como se entregaron.",
+      "cl.p1": "Calificación en Workana", "cl.gold": "Oro", "cl.p2": "Nivel en Workana", "cl.p3": "Dónde están mis clientes", "cl.all": "Todas las reseñas en Workana",
       "work.kicker": "La colección", "work.title": "Trabajos <em>seleccionados</em><sup>20</sup>",
       "work.lede": "Veinte estudios de concepto.<br>Sesenta perspectivas.",
       "work.note": "Todos los proyectos son estudios de concepto independientes. Las marcas son ficticias.",
@@ -489,11 +1011,11 @@ window.SITE = {
       "disc.text": "De una identidad en papel a un mundo en pantalla, cada estudio explora una forma distinta de hacer sentir una idea.",
       "car.kicker": "La historia hasta ahora", "car.title": "Una carrera <em>encuadernada</em><br>en un pequeño libro.",
       "car.text": "Experiencia, reseñas de clientes y el trabajo detrás de ellas, reunidos en un libro. Ábrelo y pasa las páginas.",
-      "car.s1": "Calificación en Workana", "car.s2": "Estudios de concepto", "car.s3": "Años en Photoshop", "car.s4": "Disciplinas",
+      "car.s1": "Calificación en Workana", "car.s2": "Nivel en Workana", "car.s3": "Años en Photoshop", "car.s4": "Estudios de concepto",
       "car.hint": "Haz clic en el libro para abrirlo",
       "foot.kicker": "Contacto", "foot.title": "Las buenas ideas merecen<br><em>ser vistas.</em>",
       "foot.text": "Envíame tu brief por Workana. Respondo en portugués e inglés, y también recibo briefs en español.",
-      "foot.cta": "Contrátame en Workana", "foot.note": "Portafolio de conceptos · Las marcas son ficticias", "foot.top": "Volver arriba",
+      "foot.cta": "Contrátame en Workana", "foot.note": "El trabajo para clientes es real · Los estudios de concepto usan marcas ficticias", "foot.top": "Volver arriba",
     },
   },
 };
